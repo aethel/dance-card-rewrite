@@ -1,28 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Home from './Pages/Home';
-
+import Firebase, { FirebaseContext } from './Firebase/firebase';
+import { SignUpPage } from './Pages/Signup';
+import { LoginPage } from './Pages/Login';
+import * as ROUTES from './Constants/routes'
+import { Router } from '@reach/router';
+import { LandingPage } from './Pages/Landing';
 function App() {
-  return (    
-    <div className="App">
-      <Home/>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  return (
+      <Router>
+         <LandingPage path='/'/>
+        <LoginPage path={ROUTES.LOG_IN} /> 
+        <SignUpPage path={ROUTES.LOG_IN} /> 
+      </Router>
   );
+
 }
 
 export default App;
