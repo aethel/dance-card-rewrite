@@ -1,24 +1,21 @@
-import React, { Fragment, ReactNode } from 'react'
-import { LoginComponent } from '../Components/Login/Login.component'
-import { SignUpComponent } from '../Components/SignUp/Signup.component'
+import React from 'react'
 import Firebase, { FirebaseContext } from '../Firebase/firebase'
 import { RouteComponentProps } from '@reach/router'
+import { UserProvider } from '../Contexts/user.context'
+import { LandingComponent } from '../Components/Landing/Landing.component'
 
-// type Props = {
-//     firebase?:Firebase
-// }
 
-export const LandingPage = (_:RouteComponentProps) => {
+export const LandingPage = (_: RouteComponentProps) => {
 
     return (
         <FirebaseContext.Consumer>{
-            (firebase: Firebase) =>
-                <Fragment>
-{console.log(firebase)}
-                    <LoginComponent />
-                    <SignUpComponent/>
-                </Fragment>
+            (firebase: Firebase) => {
+                return <UserProvider>
+                    <LandingComponent firebase={firebase}/>
+                </UserProvider>
+            }
         }
+
         </FirebaseContext.Consumer>
     )
 }

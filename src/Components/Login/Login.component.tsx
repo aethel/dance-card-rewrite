@@ -3,6 +3,6 @@ import React from 'react'
 
 export const LoginComponent = () => {
     return (
-        <div>is a login</div>
+        <div>is a login comp</div>
     )
 }
