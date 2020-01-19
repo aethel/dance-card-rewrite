@@ -28,7 +28,6 @@ useEffect(() => {
     }
 
     const setUser = (newUser: any) => {
-        debugger
         setUserInState(user => { return {user,...newUser}}) //merge rather than overwrite
     }
 

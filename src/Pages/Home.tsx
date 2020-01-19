@@ -3,16 +3,20 @@ import React, { FunctionComponent } from 'react'
 import Firebase from '../Firebase/firebase';
 import { LeafletMap } from '../Components/Map/Map.component';
 
-const Home: FunctionComponent<any> = ({ firebase }: { firebase: Firebase}) => {
+type Props = {
+    logoutHandler: () => void
+}
+
+const Home: FunctionComponent<Props> = (props:any) => {
 //  const {firebase} = useFirebase()
-console.log(firebase);
-    const loginHandler = () => {firebase.doAnonymousSignIn().then((res:any) => {debugger; 
-        console.log(res)});
-     }
+console.log(props);
+    // const loginHandler = () => {firebase.doSignOut().then((res:any) => {debugger; 
+    //     console.log(res)});
+    //  }
     return (
         
         <div>home
-            <button onClick={loginHandler}>log</button>
+            <button onClick={()=>props.logoutHandler()}>log out</button>
             <LeafletMap/>
         </div>
     )

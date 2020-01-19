@@ -21,6 +21,7 @@ class Firebase {
 
     doAnonymousSignIn = () => this.auth.signInAnonymously();
     doSignOut = () => this.auth.signOut();
+    onAuthStateChanged = (user:any) => this.auth.onAuthStateChanged(user);
 }
 export default Firebase;
 

@@ -2,37 +2,43 @@ import React, { Fragment, FunctionComponent } from 'react'
 import { LoginComponent } from '../Login/Login.component'
 
 import { SignUpComponent } from '../SignUp/Signup.component'
-import Firebase, { FirebaseContext } from '../../Firebase/firebase'
+import Firebase from '../../Firebase/firebase'
 import { RouteComponentProps } from '@reach/router'
-import { UserProvider, useUser } from '../../Contexts/user.context'
+import { useUser } from '../../Contexts/user.context'
+import Home from '../../Pages/Home'
 
 type Props = {
-    firebase?:Firebase
+    firebase?: Firebase
 }
 
-export const LandingComponent:FunctionComponent<Props> = (_: RouteComponentProps) => {
-const {user} = useUser()
-console.log(user);
+export const LandingComponent: FunctionComponent<Props> = ({firebase}: Props & RouteComponentProps) => {
+    const { user, setUser } = useUser()
+    console.log(user, 'METH');
 
+    firebase!.onAuthStateChanged((user: any) => {
+        console.log(user, 'authChange')
+    })
+    const loginHandler = () => {
+        firebase!.doAnonymousSignIn().then((res: any) => {
+            debugger;
+            console.log(res)
+        });
+    }
+    const logoutHandler = () => {
+        firebase!.doSignOut().then((res: any) => {
+            debugger;
+            console.log(res)
+        });
+    }
     return (
-        <FirebaseContext.Consumer>{
-            (firebase: Firebase) => {
-                const loginHandler = () => {
-                    firebase.doAnonymousSignIn().then((res: any) => {
-                        debugger;
-                        console.log(res)
-                    });
-                }
-
-                return <Fragment>
+       
+         <Fragment>
                     <button onClick={loginHandler}>log</button>
-                    {console.log(firebase)}
-
-                    <LoginComponent />
-                    <SignUpComponent />
+                    <Home logoutHandler={logoutHandler}/>
+                                            <div>
+                            <LoginComponent />
+                            <SignUpComponent />
+                        </div>         
                 </Fragment>
-            }
-        }
-        </FirebaseContext.Consumer>
     )
 }
