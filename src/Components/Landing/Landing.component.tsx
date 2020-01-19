@@ -8,23 +8,24 @@ import { useUser } from '../../Contexts/user.context'
 import Home from '../../Pages/Home'
 
 type Props = {
-    firebase?: Firebase
+    firebase: Firebase
 }
 
 export const LandingComponent: FunctionComponent<Props> = ({firebase}: Props & RouteComponentProps) => {
     const { user, setUser } = useUser()
     console.log(user, 'METH');
+    console.log(firebase, 'firebase');
 
     firebase!.onAuthStateChanged((user: any) => {
         console.log(user, 'authChange')
     })
-    const loginHandler = () => {
-        firebase!.doAnonymousSignIn().then((res: any) => {
-            debugger;
-            console.log(res)
-        });
-    }
-    const logoutHandler = () => {
+    
+
+    const loginHandler = ():void => 
+         firebase.doAnonymousSignIn().catch((error:any) => { console.log(error) })
+    
+
+    const logoutHandler = ():void => {
         firebase!.doSignOut().then((res: any) => {
             debugger;
             console.log(res)
@@ -33,7 +34,7 @@ export const LandingComponent: FunctionComponent<Props> = ({firebase}: Props & R
     return (
        
          <Fragment>
-                    <button onClick={loginHandler}>log</button>
+            <button onClick={loginHandler}>log</button>
                     <Home logoutHandler={logoutHandler}/>
                                             <div>
                             <LoginComponent />

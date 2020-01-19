@@ -1,4 +1,4 @@
-import React, { useContext, FunctionComponent } from 'react'
+import React from 'react'
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -13,7 +13,7 @@ const firebaseConfig = {
 }
 
 class Firebase {
-    auth: any;
+   private auth: any;
     constructor() {
         app.initializeApp(firebaseConfig);
         this.auth = app.auth();
@@ -22,6 +22,7 @@ class Firebase {
     doAnonymousSignIn = () => this.auth.signInAnonymously();
     doSignOut = () => this.auth.signOut();
     onAuthStateChanged = (user:any) => this.auth.onAuthStateChanged(user);
+    onEMail = (email:string, password:string) => this.auth.signInWithEmailAndPassword(email,password);
 }
 export default Firebase;
 
@@ -35,18 +36,3 @@ type Props = {
 }
 
 export const FirebaseContext = React.createContext<any>(undefined);
-
-// export const FirebaseProvider:FunctionComponent<FirebaseConsumer> = ({firebase, children}) => {
-    
-//     return <FirebaseContext.Provider value={firebase}>{children} </FirebaseContext.Provider>
-// };
-
-// export const {Consumer} = FirebaseContext;
-
-// export const useFirebase = () => {
-//     const context = useContext(FirebaseContext);
-//     if (context === undefined) {
-//         throw new Error('useFirebase has to be in FirebaseProvider');
-//     }
-//     return context
-// }

@@ -18,7 +18,6 @@ export const UserProvider = ({...props}:Props) => {
     const [user, setUserInState ] = useState<UserProfile>()
 
 useEffect(() => {
-    debugger
     const storageUser = JSON.parse(localStorage.getItem('user') as string);
     storageUser ? setUser(user) : setUser(UserProfile.create())
 }, [])
