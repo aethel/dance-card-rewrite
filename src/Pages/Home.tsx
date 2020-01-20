@@ -1,19 +1,15 @@
-import React, { useEffect } from 'react'
-import firebase from '../Firebase/firebase'
-import { LeafletMap } from '../Components/Map/map';
+import React from 'react'
+import { RouteComponentProps } from '@reach/router';
+import { UserProvider } from '../Contexts/user.context';
+import { HomeComponent } from '../Components/Home/Home.component';
 
-const Home = () => {
 
-    useEffect(() => {
-        console.log(firebase);                
-    }, [])
+const HomePage = (_: RouteComponentProps) => {
     return (
-        
-        <div>home
-
-            <LeafletMap />
-        </div>
+<UserProvider>
+    <HomeComponent/>
+</UserProvider>        
     )
 }
 
-export default Home;
+export default HomePage;
