@@ -20,9 +20,11 @@ class Firebase {
     }
 
     doAnonymousSignIn = () => this.auth.signInAnonymously();
+    doEmailRegistration = (email: string, password: string) => this.auth.createUserWithEmailAndPassword(email,password);
     doSignOut = () => this.auth.signOut();
     onAuthStateChanged = (user:any) => this.auth.onAuthStateChanged(user);
-    onEMail = (email:string, password:string) => this.auth.signInWithEmailAndPassword(email,password);
+    doEmailSignIn = (email:string, password:string) => this.auth.signInWithEmailAndPassword(email,password);
+    currentUser = () => this.auth().currentUser
 }
 export default Firebase;
 

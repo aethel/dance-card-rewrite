@@ -4,33 +4,35 @@ import { User as UserProfile } from '../Models/user.model';
 type UserConsumer = {
     user: UserProfile
     setUser: (val: UserProfile) => void
+    getUserFromStorage: () => UserProfile
 }
 
 const UserContext = React.createContext<Partial<UserConsumer>>({});
 
 type Props = {
     // user: UserProfile
-    children?: React.ReactNode
+    children: React.ReactNode
     // setUser: (user: UserProfile) => void
 }
 
-export const UserProvider = ({...props}:Props) => {
-    const [user, setUserInState ] = useState<UserProfile>()
+export const UserProvider = ({ ...props }: Props) => {
+    const [user, setUserInState] = useState<UserProfile>()
 
-useEffect(() => {
-    const storageUser = JSON.parse(localStorage.getItem('user') as string);
-    storageUser ? setUser(user) : setUser(UserProfile.create())
-}, [])
+    const getUserFromStorage = () => JSON.parse(localStorage.getItem('user') as string);
 
-    const getUserFromStorage = () => {
+    useEffect(() => {
+        const storageUser = getUserFromStorage();
+        storageUser ? setUser(user) : setUser(undefined)
+        // storageUser ? setUser(user) : setUser(UserProfile.create())
+    }, [])
 
+
+    const setUser = (newUser: UserProfile | undefined): void => {
+        setUserInState(newUser) //merge rather than overwrite
+        // setUserInState(prevUser => { return {prevUser,...newUser}}) //merge rather than overwrite
     }
 
-    const setUser = (newUser: any) => {
-        setUserInState(user => { return {user,...newUser}}) //merge rather than overwrite
-    }
-
-    return <UserContext.Provider value={{ user, setUser }} {...props} />
+    return <UserContext.Provider value={{ user, setUser, getUserFromStorage }} {...props} />
 }
 
 const { Consumer: UserConsumer } = UserContext
