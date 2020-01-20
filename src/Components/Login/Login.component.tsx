@@ -10,13 +10,11 @@ type Props = {
 }
 
 export const LoginComponent:FunctionComponent<Props> = ({firebase}:Props) => {
-    const {register, handleSubmit, watch,errors} = useForm()
+    const {register, handleSubmit, errors} = useForm()
     const {setUser} = useUser();
     
     const submitHandler: OnSubmit<any> = ({ email, password },event): void => {
-        debugger
         firebase.doEmailSignIn(email, password).then((res:any)=>{
-            debugger
             const {uid, email,displayName, name} = res.user.toJSON();
             localStorage.setItem('user', JSON.stringify(Object.assign({},{ uid, email, displayName, name}))) 
             setUser!({ uid, email, displayName, name })
