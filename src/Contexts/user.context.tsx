@@ -4,10 +4,13 @@ import { User as UserProfile } from '../Models/user.model';
 type UserConsumer = {
     user: UserProfile
     setUser: (val: UserProfile) => void
+    clearUser: () => void
     getUserFromStorage: () => UserProfile
 }
 
-const UserContext = React.createContext<Partial<UserConsumer>>({});
+const userStorageType = 'user';
+
+const UserContext = React.createContext<UserConsumer>({} as UserConsumer);
 
 type Props = {
     // user: UserProfile
@@ -16,23 +19,30 @@ type Props = {
 }
 
 export const UserProvider = ({ ...props }: Props) => {
-    const [user, setUserInState] = useState<UserProfile>()
+    const [user, setUserInState] = useState<UserProfile>({} as UserProfile)
 
-    const getUserFromStorage = () => JSON.parse(localStorage.getItem('user') as string);
+    const getUserFromStorage = () => JSON.parse(localStorage.getItem(userStorageType) as string);
 
     useEffect(() => {
         const storageUser = getUserFromStorage();
-        storageUser ? setUser(user) : setUser(undefined)
+        if (storageUser) { setUser(storageUser)} 
         // storageUser ? setUser(user) : setUser(UserProfile.create())
     }, [])
 
 
     const setUser = (newUser: UserProfile | undefined): void => {
-        setUserInState(newUser) //merge rather than overwrite
+        if (newUser) {setUserInState(newUser)} //merge rather than overwrite
         // setUserInState(prevUser => { return {prevUser,...newUser}}) //merge rather than overwrite
     }
+    
+    const clearUser = ()=> localStorage.removeItem(userStorageType);
+    // const clearUser = (): Promise<any> => Promise.resolve(() => {console.log('does it?');
+    //  localStorage.removeItem(userStorageType) })
+        
+        // setUserInState(prevUser => { return {prevUser,...newUser}}) //merge rather than overwrite
+    
 
-    return <UserContext.Provider value={{ user, setUser, getUserFromStorage }} {...props} />
+    return <UserContext.Provider value={{ user, setUser, getUserFromStorage, clearUser }} {...props} />
 }
 
 const { Consumer: UserConsumer } = UserContext

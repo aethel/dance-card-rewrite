@@ -8,8 +8,8 @@ import { LeafletMap } from '../Map/Map.component';
 
 
 export const HomeComponent: FunctionComponent<any> = () => {
-    const { user } = useUser();
-console.log(user);
+    const { user, user:{uid} } = useUser();
+console.log(uid);
 
     return (
         <Fragment>
