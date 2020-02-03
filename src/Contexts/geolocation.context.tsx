@@ -23,12 +23,10 @@ export const GeolocationProvider = ({ ...props }: Props) => {
 
     const onChange = ({ coords }: any) => {
         if (mounted) {
-            console.log(coords);
             setLocation({
                 latitude: coords.latitude,
                 longitude: coords.longitude,
             });
-            console.log(location);
         }
     };
 

@@ -12,6 +12,13 @@ interface IUser {
 // l: any;
 // d: any; in profile
 
+export type UserDoc = {
+    username: string,
+    email: string,
+    coordinates: firebase.firestore.GeoPoint,
+    active: boolean,
+    chats: string[]
+};
 
 export class User implements IUser {
     readonly uid = undefined;

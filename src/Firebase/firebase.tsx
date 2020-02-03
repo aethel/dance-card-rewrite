@@ -2,8 +2,10 @@ import React from 'react'
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import { GeoFirestore } from "geofirestore";
+import { Collections } from '../Constants/collections';
 
-const firebaseConfig = {   
+const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
     databaseURL: process.env.REACT_APP_DB_URL,
@@ -13,25 +15,35 @@ const firebaseConfig = {
 }
 
 class Firebase {
-   private auth: any;
+    private auth: firebase.auth.Auth;
+    private firestore: firebase.firestore.Firestore;
+    private firestoreRef: any;
+    private geofirestore: GeoFirestore;
+
     constructor() {
         app.initializeApp(firebaseConfig);
         this.auth = app.auth();
+        this.firestore = app.firestore();
+        this.firestoreRef = app.firestore;
+        this.geofirestore = new GeoFirestore(this.firestore);
     }
 
     doAnonymousSignIn = () => this.auth.signInAnonymously();
-    doEmailRegistration = (email: string, password: string) => this.auth.createUserWithEmailAndPassword(email,password);
+    doEmailRegistration = (email: string, password: string) => this.auth.createUserWithEmailAndPassword(email, password);
     doSignOut = () => this.auth.signOut();
-    onAuthStateChanged = (user:any) => this.auth.onAuthStateChanged(user);
-    doEmailSignIn = (email:string, password:string) => this.auth.signInWithEmailAndPassword(email,password);
-    currentUser = () => this.auth().currentUser
+    onAuthStateChanged = (user: any) => this.auth.onAuthStateChanged(user);
+    doEmailSignIn = (email: string, password: string) => this.auth.signInWithEmailAndPassword(email, password);
+    getCurrentUser = () => this.auth.currentUser;
+    getUsers = () => this.geofirestore.collection(Collections.Users);
+    getGeoPoint = (latitude: number, longitude: number) =>
+        new this.firestoreRef.GeoPoint(latitude, longitude);
 }
 export default Firebase;
 
 // export const FirebaseContext = React.createContext<Firebase|null>(null)
 
 type FirebaseConsumer = {
-    firebase:Firebase
+    firebase: Firebase
 }
 type Props = {
     firebase: Firebase | undefined
