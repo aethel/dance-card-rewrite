@@ -3,13 +3,18 @@ import Firebase from '../../Firebase/firebase';
 import * as ROUTES from '../../Constants/routes'
 import { useForm, OnSubmit } from 'react-hook-form'
 import { navigate } from '@reach/router';
+import { useGeo } from '../../Contexts/geolocation.context';
 
 type Props = {
     firebase: Firebase
 }
 
 export const SignUpComponent: FunctionComponent<Props> = ({ firebase }: Props) => {
-    const { register, handleSubmit, watch, errors } = useForm()
+    const { register, handleSubmit, watch, errors } = useForm();
+    const { location} = useGeo()
+
+console.log(location, 'location in');
+
 
     const submitHandler: OnSubmit<any> = (data): void => {
         const {email, password} = data;
