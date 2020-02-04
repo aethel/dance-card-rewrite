@@ -25,7 +25,7 @@ export const SignUpComponent: FunctionComponent<Props> = ({ firebase }: Props) =
                 const doc: UserDoc = {
                     username: username,
                     email: res.user.email,
-                    coordinates: getGeoPoint(location.latitude, location.longitude),
+                    coordinates: getGeoPoint(location.lat, location.lng),
                     active: true,
                     chats: []
                 };

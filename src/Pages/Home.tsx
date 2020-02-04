@@ -4,7 +4,6 @@ import { UserProvider } from '../Contexts/user.context';
 import { HomeComponent } from '../Components/Home/Home.component';
 import HeaderComponent from '../Components/Header/Header.component';
 import { GeolocationProvider } from '../Contexts/geolocation.context';
-import { SignUpPage } from './Signup';
 
 
 const HomePage = (_: RouteComponentProps) => {
