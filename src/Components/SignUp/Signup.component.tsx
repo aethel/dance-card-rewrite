@@ -20,31 +20,33 @@ export const SignUpComponent: FunctionComponent<Props> = ({ firebase }: Props) =
 
     const submitHandler: OnSubmit<any> = (data): void => {
         const { email, password, username } = data;
-        firebase.doEmailRegistration(email, password).then((res: any) => {
-            if (res) {
-                const doc: UserDoc = {
-                    username: username,
-                    email: res.user.email,
-                    coordinates: getGeoPoint(location.lat, location.lng),
-                    active: true,
-                    chats: []
-                };
-                firebase.getUsers().doc(res.user.uid).set(doc).then(docRef => {
-                    navigate(ROUTES.LOG_IN)
-                }, error => console.log(error))
-            }
-        }).catch((error: any) => { console.log(error) })
+            firebase.doEmailRegistration(email, password).then((res: any) => {
+                if (res) {
+                    const doc: UserDoc = {
+                        username: username,
+                        email: res.user.email,
+                        coordinates: getGeoPoint(location.lat, location.lng),
+                        active: true,
+                        chats: []
+                    };
+                    firebase.getUsers().doc(res.user.uid).set(doc).then(docRef => {
+                        navigate(ROUTES.LOG_IN)
+                    }, error => console.log(error))
+                }
+            }).catch((error: any) => { console.log(error) });
+        
     }
 
     return (
         <Fragment>
-            <form onSubmit={handleSubmit(submitHandler)}>
+            {location ? (<form onSubmit={handleSubmit(submitHandler)}>
                 <input required name='username' type='text' placeholder='username' ref={register({ required: true })} />
                 <input required name='email' type='email' placeholder='email' ref={register({ required: true })} />
                 <input required name='password' type='password' placeholder='password' ref={register({ required: true })} />
                 {errors.email && <span>email is required</span>}
                 <button type='submit'>Register</button>
-            </form>
+            </form>) : <span>no geolocation</span> }
+            
         </Fragment>
     )
 }
