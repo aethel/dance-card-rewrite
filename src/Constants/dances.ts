@@ -1,14 +1,14 @@
 const Dances: string[] = [
-    'lindyhop',
+    'lindyHop',
     'blues',
     'fuston',
     'balboa',
-    'collegiateshag',
+    'collegiateShag',
     'salsa',
     'bachata',
     'tango',
     'kizomba',
-    'balfolk'
+    'balFolk'
 ];
 
 export interface DancePosition {
