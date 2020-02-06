@@ -3,17 +3,16 @@ import Firebase, { FirebaseContext } from '../../Firebase/firebase'
 import { navigate } from '@reach/router'
 import * as ROUTES from '../../Constants/routes'
 import { useUser } from '../../Contexts/user.context'
+import NavigationComponent from './Navigation.component'
 
-const HeaderComponent: FunctionComponent<any> = () => {
+const HeaderComponent: FunctionComponent = () => {
     const { clearUser } = useUser();
     return (
         <FirebaseContext.Consumer>{
             (firebase: Firebase) => {
                 return <Fragment>
-                    <button onClick={() => {
-                        firebase.doSignOut(); 
-                        clearUser();
-                        navigate(ROUTES.LOG_IN)}}>logout</button>
+                    <NavigationComponent firebase={firebase}/>
+            
                 </Fragment>
 
             }
