@@ -26,6 +26,7 @@ export const SignUpComponent: FunctionComponent<Props> = ({ firebase }: Props) =
                         username: username,
                         email: res.user.email,
                         coordinates: getGeoPoint(location.lat, location.lng),
+                        dances: [],
                         active: true,
                         chats: []
                     };

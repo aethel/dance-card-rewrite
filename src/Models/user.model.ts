@@ -1,5 +1,6 @@
 import React from 'react'
 import { GeoFirestoreTypes } from 'geofirestore/dist/GeoFirestoreTypes'
+import { DancePosition } from '../Constants/dances';
 
 interface IUser {
     uid: number | undefined;
@@ -17,7 +18,10 @@ export type UserDoc = {
     email: string,
     coordinates: firebase.firestore.GeoPoint,
     active: boolean,
-    chats: string[]
+    chats: string[],
+    dances: {
+        [key: string]: DancePosition
+    }[]
 };
 
 export class User implements IUser {

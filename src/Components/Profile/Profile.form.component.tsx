@@ -2,6 +2,8 @@ import React, { FunctionComponent } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import ProfileDanceItemComponent from './Profile.danceItem.component'
 import dances, { DancePosition } from '../../Constants/dances'
+import { useUser } from '../../Contexts/user.context'
+import Firebase from '../../Firebase/firebase'
 
 type ProfileData = {
     username: string,
@@ -10,7 +12,11 @@ type ProfileData = {
     // [key:string]: any
 }
 
-const ProfileFormComponent: FunctionComponent = () => {
+type Props = {
+    firebase: Firebase
+}
+const ProfileFormComponent: FunctionComponent<Props> = ({firebase}) => {
+    const {user} = useUser();
     const { control, register, handleSubmit, errors, watch } = useForm({
         defaultValues: {
             username: 'default name',
@@ -18,14 +24,20 @@ const ProfileFormComponent: FunctionComponent = () => {
             active: true
         }
     })
-    const { fields } = useFieldArray({
-        control,
-        name: 'dances'
-    });
+    // const { fields } = useFieldArray({
+    //     control,
+    //     name: 'dances'
+    // });
 
     const onSubmit = (data: any) => {
-
+        console.log(user);
+        
         console.log(data);
+
+        firebase.getUsers().doc(user.uid).set(data, {merge:true}).then(docRef => {
+            console.log(docRef);
+            
+        }, error => console.log(error))
     }
 
 

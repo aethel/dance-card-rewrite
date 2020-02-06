@@ -8,7 +8,7 @@ type Props = {
 
 const Profile: FunctionComponent<Props> = ({ firebase }: Props) => {
     return <div>
-        <ProfileFormComponent/>
+        <ProfileFormComponent firebase={firebase}/>
     </div>
 }
 
