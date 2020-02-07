@@ -1,47 +1,33 @@
-import React, { FunctionComponent } from 'react'
-import { useForm, useFieldArray } from 'react-hook-form'
-import ProfileDanceItemComponent from './Profile.danceItem.component'
+import React, { FunctionComponent, Fragment } from 'react'
+import { useForm } from 'react-hook-form'
 import dances, { DancePosition } from '../../Constants/dances'
 import { useUser } from '../../Contexts/user.context'
 import Firebase from '../../Firebase/firebase'
-
-type ProfileData = {
-    username: string,
-    email: string,
-    active: boolean,
-    // [key:string]: any
-}
+import { ProfileData } from '../../Models/profile.models'
 
 type Props = {
     firebase: Firebase
 }
 const ProfileFormComponent: FunctionComponent<Props> = ({firebase}) => {
     const {user} = useUser();
-    const { control, register, handleSubmit, errors, watch } = useForm({
+    const { register, handleSubmit, errors, formState } = useForm<ProfileData>({
         defaultValues: {
             username: 'default name',
             email: 'defaultEmail@fe.fe',
             active: true
         }
     })
-    // const { fields } = useFieldArray({
-    //     control,
-    //     name: 'dances'
-    // });
 
-    const onSubmit = (data: any) => {
-        console.log(user);
-        
-        console.log(data);
-
-        firebase.getUsers().doc(user.uid).set(data, {merge:true}).then(docRef => {
-            console.log(docRef);
-            
-        }, error => console.log(error))
+    const onSubmit = (data: ProfileData) => {
+        if(!Object.keys(errors).length){
+            firebase.getUsers().doc(user.uid).set(data, {merge:true}).then(docRef => {
+                console.log(docRef);
+            }, error => console.log(error))
+        }
     }
 
-
     return (
+        <Fragment>
         <form onSubmit={handleSubmit(onSubmit)}>
             <legend>
                 Profile
@@ -50,7 +36,6 @@ const ProfileFormComponent: FunctionComponent<Props> = ({firebase}) => {
                 <li>
                     <input type="text" placeholder='username' name="username" ref={register} />
                 </li>
-
                 <li>
                     <input type="email" placeholder='email' name="email" ref={register} />
                 </li>
@@ -80,6 +65,9 @@ const ProfileFormComponent: FunctionComponent<Props> = ({firebase}) => {
             </ul>
             <button type="submit">Update</button>
         </form>
+        {errors && console.log(errors)}
+        } 
+        </Fragment>       
     )
 }
 
