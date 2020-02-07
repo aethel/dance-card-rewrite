@@ -4,7 +4,7 @@ import * as ROUTES from '../../Constants/routes'
 import { useForm, OnSubmit } from 'react-hook-form'
 import { navigate } from '@reach/router';
 import { useGeo } from '../../Contexts/geolocation.context';
-import { UserDoc } from '../../Models/user.model';
+import { Profile } from '../../Models/profile.models';
 
 type Props = {
     firebase: Firebase
@@ -22,15 +22,21 @@ export const SignUpComponent: FunctionComponent<Props> = ({ firebase }: Props) =
         const { email, password, username } = data;
             firebase.doEmailRegistration(email, password).then((res: any) => {
                 if (res) {
-                    const doc: UserDoc = {
+                    const doc = {...Profile.create(),
+                         uid: res.user.uid,
                         username: username,
                         email: res.user.email,
-                        coordinates: getGeoPoint(location.lat, location.lng),
-                        dances: [],
-                        active: true,
-                        chats: [],
-                        uid: res.user.uid
-                    };
+                        coordinates: getGeoPoint(location.lat, location.lng)};
+
+                    // {
+                    //     username: username,
+                    //     email: res.user.email,
+                    //     coordinates: getGeoPoint(location.lat, location.lng),
+                    //     dances: [],
+                    //     active: true,
+                    //     chats: [],
+                    //     uid: res.user.uid
+                    // };
                     firebase.getUsers().doc(res.user.uid).set(doc).then(docRef => {
                         navigate(ROUTES.LOG_IN)
                     }, error => console.log(error))

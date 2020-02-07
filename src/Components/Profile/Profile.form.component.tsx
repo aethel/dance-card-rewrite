@@ -3,23 +3,24 @@ import { useForm } from 'react-hook-form'
 import dances, { DancePosition } from '../../Constants/dances'
 import { useUser } from '../../Contexts/user.context'
 import Firebase from '../../Firebase/firebase'
-import { ProfileData } from '../../Models/profile.models'
+import { Profile } from '../../Models/profile.models'
 
 type Props = {
     firebase: Firebase
 }
 const ProfileFormComponent: FunctionComponent<Props> = ({firebase}) => {
     const {user} = useUser();
-    const { register, handleSubmit, errors, formState } = useForm<ProfileData>({
-        defaultValues: {
-            username: 'default name',
-            email: 'defaultEmail@fe.fe',
-            active: true,
-            uid: user.uid
-        }
+    const { register, handleSubmit, errors, formState } = useForm<Profile>(
+        {
+        // defaultValues: {
+        //     username: 'default name',
+        //     email: 'defaultEmail@fe.fe',
+        //     active: true,
+        //     uid: user.uid
+        // }
     })
 
-    const onSubmit = (data: ProfileData) => {
+    const onSubmit = (data: Profile) => {
         if(!Object.keys(errors).length){
             firebase.getUsers().doc(user.uid).set(data, {merge:true}).then(docRef => {
                 console.log(docRef);
