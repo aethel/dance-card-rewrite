@@ -14,8 +14,8 @@ const NavigationComponent: FunctionComponent<Props> = ({ firebase }: Props) => {
     return (
         <nav>
         {/* {isLoggedIn ?
-            <Fragment>
-            <Link to={ROUTES.PROFILE} /> */}
+            <Fragment>  */}
+            <Link to={ROUTES.HOME}>Home</Link>
             <Link to={ROUTES.PROFILE}>Profile</Link>
                     <button onClick={() => {
                         firebase.doSignOut();

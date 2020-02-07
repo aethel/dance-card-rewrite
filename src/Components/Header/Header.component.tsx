@@ -5,19 +5,14 @@ import * as ROUTES from '../../Constants/routes'
 import { useUser } from '../../Contexts/user.context'
 import NavigationComponent from './Navigation.component'
 
-const HeaderComponent: FunctionComponent = () => {
+type Props = {
+    firebase: Firebase
+}
+
+const HeaderComponent: FunctionComponent<Props> = ({firebase}:Props) => {
     const { clearUser } = useUser();
     return (
-        <FirebaseContext.Consumer>{
-            (firebase: Firebase) => {
-                return <Fragment>
-                    <NavigationComponent firebase={firebase}/>
-            
-                </Fragment>
-
-            }
-        }
-        </FirebaseContext.Consumer>
+                            <NavigationComponent firebase={firebase}/>
     )
 }
 

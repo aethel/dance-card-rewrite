@@ -14,7 +14,8 @@ const ProfileFormComponent: FunctionComponent<Props> = ({firebase}) => {
         defaultValues: {
             username: 'default name',
             email: 'defaultEmail@fe.fe',
-            active: true
+            active: true,
+            uid: user.uid
         }
     })
 

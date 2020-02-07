@@ -19,6 +19,7 @@ export type UserDoc = {
     coordinates: firebase.firestore.GeoPoint,
     active: boolean,
     chats: string[],
+    uid: any,
     dances: {
         [key: string]: DancePosition
     }[]

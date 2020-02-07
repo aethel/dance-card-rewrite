@@ -2,7 +2,7 @@ import React from 'react'
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
-import { GeoFirestore } from "geofirestore";
+import { GeoFirestore, GeoCollectionReference } from "geofirestore";
 import { Collections } from '../Constants/collections';
 
 const firebaseConfig = {
@@ -34,7 +34,7 @@ class Firebase {
     onAuthStateChanged = (user: any) => this.auth.onAuthStateChanged(user);
     doEmailSignIn = (email: string, password: string) => this.auth.signInWithEmailAndPassword(email, password);
     getCurrentUser = () => this.auth.currentUser;
-    getUsers = () => this.geofirestore.collection(Collections.Users);
+    getUsers = ():GeoCollectionReference  => this.geofirestore.collection(Collections.Users);
     getGeoPoint = (latitude: number, longitude: number) =>
         new this.firestoreRef.GeoPoint(latitude, longitude);
 }

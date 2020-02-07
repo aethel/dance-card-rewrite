@@ -1,54 +1,57 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { User as UserProfile } from '../Models/user.model';
+import Firebase from '../Firebase/firebase';
+import { GeoQuerySnapshot } from 'geofirestore';
 
-type UserConsumer = {
-    user: UserProfile
-    setUser: (val: UserProfile) => void
-    clearUser: () => void
-    getUserFromStorage: () => UserProfile
+type ProfileConsumer = {
+    profile: UserProfile
+    setProfile: (val: UserProfile) => void
+    getProfileFromStorage: () => UserProfile
 }
 
+const profileStorageType = 'profile';
 const userStorageType = 'user';
 
-const UserContext = React.createContext<UserConsumer>({} as UserConsumer);
+const ProfileContext = React.createContext<ProfileConsumer>({} as ProfileConsumer);
 
 type Props = {
     // user: UserProfile
-    children: React.ReactNode
-    // setUser: (user: UserProfile) => void
+    children: React.ReactNode,
+    firebase?: Firebase
+    // setProfile: (user: UserProfile) => void
 }
 
-export const UserProvider = ({ ...props }: Props) => {
-    const [user, setUserInState] = useState<UserProfile>({} as UserProfile)
+export const ProfileProvider = ({ ...props }: Props) => {
+    const [profile, setProfileInState] = useState<UserProfile>({} as UserProfile)
 
+    const getProfileFromStorage = () => JSON.parse(localStorage.getItem(profileStorageType) as string);
     const getUserFromStorage = () => JSON.parse(localStorage.getItem(userStorageType) as string);
 
     useEffect(() => {
-        const storageUser = getUserFromStorage();
-        if (storageUser) { setUser(storageUser)} 
-        // storageUser ? setUser(user) : setUser(UserProfile.create())
+        const storageProfile = getProfileFromStorage();
+        if (storageProfile) {
+            setProfile(storageProfile)
+        } else {
+            const localUser = getUserFromStorage();
+            const profile = props.firebase?.getUsers().where('uid', '==', localUser!.uid)
+            profile!.get().then((docs: GeoQuerySnapshot) => docs.forEach(doc => console.log(doc.data())))
+
+        }
     }, [])
 
 
-    const setUser = (newUser: UserProfile | undefined): void => {
-        if (newUser) {setUserInState(newUser)} //merge rather than overwrite
-        // setUserInState(prevUser => { return {prevUser,...newUser}}) //merge rather than overwrite
+    const setProfile = (newProfile: UserProfile | undefined): void => {
+        if (newProfile) { setProfileInState(newProfile) } //merge rather than overwrite
+        // setProfileInState(prevUser => { return {prevUser,...newUser}}) //merge rather than overwrite
     }
-    
-    const clearUser = ()=> localStorage.removeItem(userStorageType);
-    // const clearUser = (): Promise<any> => Promise.resolve(() => {console.log('does it?');
-    //  localStorage.removeItem(userStorageType) })
-        
-        // setUserInState(prevUser => { return {prevUser,...newUser}}) //merge rather than overwrite
-    
 
-    return <UserContext.Provider value={{ user, setUser, getUserFromStorage, clearUser }} {...props} />
+    return <ProfileContext.Provider value={{ profile, setProfile, getProfileFromStorage }} {...props} />
 }
 
-const { Consumer: UserConsumer } = UserContext
+const { Consumer: ProfileConsumer } = ProfileContext
 
-export const useUser = () => {
-    const context = useContext(UserContext);
+export const useProfile = () => {
+    const context = useContext(ProfileContext);
     if (context === undefined) {
         throw new Error('must use in UserProvider');
     }

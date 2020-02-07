@@ -28,7 +28,8 @@ export const SignUpComponent: FunctionComponent<Props> = ({ firebase }: Props) =
                         coordinates: getGeoPoint(location.lat, location.lng),
                         dances: [],
                         active: true,
-                        chats: []
+                        chats: [],
+                        uid: res.user.uid
                     };
                     firebase.getUsers().doc(res.user.uid).set(doc).then(docRef => {
                         navigate(ROUTES.LOG_IN)
