@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { User as UserProfile } from '../Models/user.model';
 import Firebase from '../Firebase/firebase';
 import { GeoQuerySnapshot } from 'geofirestore';
 import { Profile } from '../Models/profile.models';
