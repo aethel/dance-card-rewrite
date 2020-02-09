@@ -1,6 +1,5 @@
 import React from 'react'
 import { GeoFirestoreTypes } from 'geofirestore/dist/GeoFirestoreTypes'
-import { DancePosition } from '../Constants/dances';
 
 interface IUser {
     uid: number | undefined;

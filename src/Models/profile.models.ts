@@ -1,4 +1,4 @@
-import { DancePosition } from '../Constants/dances';
+import Dances, { Dance, DanceMap } from '../Constants/dances';
 
 export type IProfile = {
     username: string | undefined,
@@ -7,18 +7,17 @@ export type IProfile = {
     active: boolean | undefined,
     chats: string[] | undefined,
     uid: string | undefined,
-    dances: {
-        [key: string]: DancePosition
-    }[] | undefined;
+    dances: DanceMap | undefined;
+    // dances: [string, DancePosition][] | undefined;
 };
 
 export class Profile implements IProfile {
-    readonly username = undefined;
-    readonly email = undefined;
+    readonly username = '';
+    readonly email = '';
     readonly coordinates = undefined;
     readonly active = true;
     readonly chats = [];
-    readonly uid = undefined;
-    readonly dances = [];
+    readonly uid = '';
+    readonly dances = Dances;
     static create(): Profile { return new Profile() };
 }
