@@ -4,6 +4,7 @@ import { LatLngLiteral } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { isObjectWithValue } from '../../Utils/object';
+import { GeoFirestoreTypes } from 'geofirestore';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -14,7 +15,8 @@ L.Icon.Default.mergeOptions({
 });
 
 type Props = {
-    centre: LatLngLiteral
+    centre: LatLngLiteral;
+    markers: GeoFirestoreTypes.QueryDocumentSnapshot[];
 }
 
 export const LeafletMap = (props: Props) => {
@@ -27,7 +29,7 @@ export const LeafletMap = (props: Props) => {
         return isObjectWithValue(props.centre, 'lat') ? props.centre : defaultLocation;
     }
 
-    return <Map style={{ width: '100%', height: '100vw' }} center={setDefaultLocation()} zoom={13}>
+return <Map style={{ width: '100%', height: '100vw' }} center={setDefaultLocation()} zoom={13}>
         <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
@@ -35,5 +37,18 @@ export const LeafletMap = (props: Props) => {
         <Marker position={setDefaultLocation()}>
             <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
         </Marker>
+
+        {/* filter out current user? */}
+        {props.markers.map((item: GeoFirestoreTypes.QueryDocumentSnapshot, index: number) => {
+            const { coordinates, username } = item.data();
+            const mapCoords = (coordinates:any): LatLngLiteral => {
+                return {lat: coordinates.latitude, lng: coordinates.longitude}
+            }
+            return (
+                <Marker key={index} position={mapCoords(coordinates)}>
+                    <Popup>{username}A pretty CSS3 popup.<br />Easily customizable.</Popup>
+                </Marker>
+            )
+        })}
     </Map>
 }

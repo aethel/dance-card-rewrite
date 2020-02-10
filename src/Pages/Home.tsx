@@ -17,7 +17,7 @@ const HomePage = (_: RouteComponentProps) => {
                         <GeolocationProvider>
                             <ProfileProvider firebase={firebase}>
                                 <HeaderComponent firebase={firebase} />
-                                <HomeComponent />
+                                <HomeComponent firebase={firebase}/>
                             </ProfileProvider>
                         </GeolocationProvider>
                     </UserProvider>
