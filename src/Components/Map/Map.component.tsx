@@ -36,7 +36,7 @@ return <Map style={{ width: '100%', height: '100vw' }} center={setDefaultLocatio
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
         />
         <Marker position={setDefaultLocation()}>
-            <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+            <Popup>You're here</Popup>
         </Marker>
 
         {/* filter out current user? */}
@@ -48,7 +48,8 @@ return <Map style={{ width: '100%', height: '100vw' }} center={setDefaultLocatio
             }
             return (
                 <Marker key={index} position={mapCoords(coordinates)}>
-                    <Popup>{username}A pretty CSS3 popup.<br />Easily customizable./>
+                    <Popup>
+                        <strong>{username}</strong><br/>
                         <CustomPopup dances={dances}/>
                     </Popup>
                 </Marker>
