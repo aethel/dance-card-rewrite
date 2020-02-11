@@ -12,10 +12,8 @@ type AuthConsumer = {
 const AuthContext = React.createContext<AuthConsumer>({} as AuthConsumer);
 
 type Props = {
-    // user: UserProfile
     children: React.ReactNode,
     firebase?: Firebase
-    // setUser: (user: UserProfile) => void
 }
 
 export const AuthProvider = ({ ...props }: Props) => {

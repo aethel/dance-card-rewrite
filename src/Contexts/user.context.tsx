@@ -1,12 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { User as UserProfile } from '../Models/user.model';
-import Firebase from '../Firebase/firebase';
 
 type UserConsumer = {
     user: UserProfile
     setUser: (val: UserProfile) => void
     clearUser: () => void
-    checkUser: () => any
     getUserFromStorage: () => UserProfile
 }
 
@@ -15,10 +13,7 @@ const userStorageType = 'user';
 const UserContext = React.createContext<UserConsumer>({} as UserConsumer);
 
 type Props = {
-    // user: UserProfile
-    children: React.ReactNode,
-    firebase?:Firebase
-    // setUser: (user: UserProfile) => void
+    children: React.ReactNode
 }
 
 export const UserProvider = ({ ...props }: Props) => {
@@ -35,19 +30,14 @@ export const UserProvider = ({ ...props }: Props) => {
 
     const setUser = (newUser: UserProfile | undefined): void => {
         if (newUser) {setUserInState(newUser)} //merge rather than overwrite
-        // setUserInState(prevUser => { return {prevUser,...newUser}}) //merge rather than overwrite
     }
-    
-    const checkUser = (): any => props!.firebase!.getCurrentUser();
     
     const clearUser = ()=> localStorage.removeItem(userStorageType);
     // const clearUser = (): Promise<any> => Promise.resolve(() => {console.log('does it?');
     //  localStorage.removeItem(userStorageType) })
-        
-        // setUserInState(prevUser => { return {prevUser,...newUser}}) //merge rather than overwrite
     
 
-    return <UserContext.Provider value={{ user, setUser, getUserFromStorage, clearUser, checkUser }} {...props} />
+    return <UserContext.Provider value={{ user, setUser, getUserFromStorage, clearUser }} {...props} />
 }
 
 const { Consumer: UserConsumer } = UserContext
