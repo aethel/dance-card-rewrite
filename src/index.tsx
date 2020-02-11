@@ -4,10 +4,16 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Firebase, { FirebaseContext } from './Firebase/firebase';
+import { AuthProvider } from './Contexts/auth.context';
 
 ReactDOM.render(
     <FirebaseContext.Provider value={new Firebase()}>
-        <App />
+        <FirebaseContext.Consumer>{
+            (firebase: Firebase) => {
+               return <AuthProvider firebase={firebase}>
+                    <App />
+                </AuthProvider>
+            }}</FirebaseContext.Consumer>
     </FirebaseContext.Provider>
 
 , document.getElementById('root'));

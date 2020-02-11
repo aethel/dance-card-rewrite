@@ -3,58 +3,37 @@ import { LoginComponent } from '../Login/Login.component'
 import * as ROUTES from '../../Constants/routes'
 import { SignUpComponent } from '../SignUp/Signup.component'
 import Firebase from '../../Firebase/firebase'
-import { RouteComponentProps, navigate } from '@reach/router'
+import { RouteComponentProps, navigate, Router } from '@reach/router'
 import { useUser } from '../../Contexts/user.context'
 import Home from '../../Pages/Home'
+import { LandingPage } from '../../Pages/Landing'
+import { LoginPage } from '../../Pages/Login'
+import { SignUpPage } from '../../Pages/Signup'
+import HomePage from '../../Pages/Home'
+import { ProfilePage } from '../../Pages/Profile'
+import { useAuth } from '../../Contexts/auth.context'
 
 type Props = {
     firebase: Firebase
 }
 
 export const LandingComponent: FunctionComponent<Props> = ({firebase}: Props & RouteComponentProps) => {
-    const { user, setUser, getUserFromStorage } = useUser()
-    const [ registrationNeeded, setRegistrationNeeded ] = useState<boolean>(false) 
+    const {auth} = useAuth(); 
 
-    console.log(user, 'METH');
-    console.log(firebase, 'firebase');
+    console.log(auth, 'METH');
 
 
 
     useEffect(() => {
-        user ? navigate(ROUTES.HOME) : navigate(ROUTES.LOG_IN)
-        
-    }, [user])
-    // firebase!.onAuthStateChanged((user: any) => {
-    //     if(!user){
-    //         localStorage.clear();
-    //     } else {
-    //         const {uid, email,displayName, name} = user;
-    //         const oldUser = getUserFromStorage!();
-    //         oldUser ? localStorage.setItem('user', JSON.stringify({ ...oldUser, uid, email, displayName, name })) : localStorage.setItem('user', JSON.stringify(Object.assign({},{ uid, email, displayName, name}))) 
-    //     }
-    //     console.log(user, 'authChange')
-        
-    // })
-    
+        auth.user ? navigate(ROUTES.HOME) : navigate(ROUTES.LOG_IN)
+        // https://dev.to/bmcmahen/using-firebase-with-react-hooks-21ap
+        // https://usehooks.com/useAuth/
+        // https://stackoverflow.com/questions/55366320/how-do-i-use-the-firebase-onauthstatechange-with-the-new-react-hooks
+    }, [])
 
-     
+    return (<Fragment>
 
-    // const logoutHandler = ():void => {
-    //     firebase!.doSignOut().then((res: any) => {
-    //         debugger;
-    //         console.log(res)
-    //     });
-    // }
-    return (
-       
-         <Fragment>
-            {/* <button onClick={loginHandler}>log</button> */}
-                    {/* <Home logoutHandler={logoutHandler}/> */}
-                                            <div>
-                                                {}
-                {/* <LoginComponent loginHandler={loginHandler} /> */}
-                {/* {registrationNeeded && <SignUpComponent registrationHandler={registrationHandler} />} */}
-                        </div>         
-                </Fragment>
+                    
+    </Fragment>
     )
 }
