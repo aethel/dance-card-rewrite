@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { isObjectWithValue } from '../../Utils/object';
 import { GeoFirestoreTypes } from 'geofirestore';
+import CustomPopup from '../CustomPopup/CustomPopup.component';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -40,13 +41,16 @@ return <Map style={{ width: '100%', height: '100vw' }} center={setDefaultLocatio
 
         {/* filter out current user? */}
         {props.markers.map((item: GeoFirestoreTypes.QueryDocumentSnapshot, index: number) => {
-            const { coordinates, username } = item.data();
+            const { coordinates, username, dances } = item.data();
+            
             const mapCoords = (coordinates:any): LatLngLiteral => {
                 return {lat: coordinates.latitude, lng: coordinates.longitude}
             }
             return (
                 <Marker key={index} position={mapCoords(coordinates)}>
-                    <Popup>{username}A pretty CSS3 popup.<br />Easily customizable.</Popup>
+                    <Popup>{username}A pretty CSS3 popup.<br />Easily customizable./>
+                        <CustomPopup dances={dances}/>
+                    </Popup>
                 </Marker>
             )
         })}
