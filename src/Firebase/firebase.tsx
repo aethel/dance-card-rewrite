@@ -35,6 +35,7 @@ class Firebase {
     doEmailSignIn = (email: string, password: string) => this.auth.signInWithEmailAndPassword(email, password);
     getCurrentUser = () => this.auth.currentUser;
     getUsers = ():GeoCollectionReference  => this.geofirestore.collection(Collections.Users);
+    getChats = ()  => this.firestore.collection(Collections.Chats);
     getGeoPoint = (latitude: number, longitude: number) =>
         new this.firestoreRef.GeoPoint(latitude, longitude);
 }

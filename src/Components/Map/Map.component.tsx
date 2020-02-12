@@ -6,6 +6,9 @@ import L from 'leaflet';
 import { isObjectWithValue } from '../../Utils/object';
 import { GeoFirestoreTypes } from 'geofirestore';
 import CustomPopup from '../CustomPopup/CustomPopup.component';
+import { Link, navigate } from '@reach/router';
+import * as ROUTES from '../../Constants/routes'
+import { Profile } from '../../Models/profile.models';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -41,7 +44,8 @@ return <Map style={{ width: '100%', height: '100vw' }} center={setDefaultLocatio
 
         {/* filter out current user? */}
         {props.markers.map((item: GeoFirestoreTypes.QueryDocumentSnapshot, index: number) => {
-            const { coordinates, username, dances } = item.data();
+            const { coordinates, username, dances, uid } = item.data() as Profile;
+            console.log(item.data());
             
             const mapCoords = (coordinates:any): LatLngLiteral => {
                 return {lat: coordinates.latitude, lng: coordinates.longitude}
@@ -51,6 +55,7 @@ return <Map style={{ width: '100%', height: '100vw' }} center={setDefaultLocatio
                     <Popup>
                         <strong>{username}</strong><br/>
                         <CustomPopup dances={dances}/>
+                        <Link to={ROUTES.CHAT} state={{ targetID: uid }}>Message</Link>
                     </Popup>
                 </Marker>
             )

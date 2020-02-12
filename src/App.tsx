@@ -9,6 +9,7 @@ import HomePage from './Pages/Home';
 import { useAuth } from './Contexts/auth.context';
 import { ProfilePage } from './Pages/Profile';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute.component';
+import { ChatPage } from './Pages/Chat';
 function App() {
   const { auth } = useAuth(); 
 console.log(auth,'app');
@@ -20,6 +21,7 @@ console.log(auth,'app');
       <SignUpPage path={ROUTES.SIGN_UP} />
       <PrivateRoute as={HomePage} path={ROUTES.HOME}/>
       <PrivateRoute as={ProfilePage} path={ROUTES.PROFILE}/>
+      <PrivateRoute as={ChatPage} path={ROUTES.CHAT}/>
       </Router>
   );
 
