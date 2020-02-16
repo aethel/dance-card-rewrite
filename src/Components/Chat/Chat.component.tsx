@@ -12,10 +12,11 @@ type Props = {
 };
 
 const ChatComponent: FunctionComponent<Props> = ({ firebase, targetID }) => {
-  console.log(targetID!.targetID);
   const [message, setMessage] = useState<string>();
+  const [currentChatId, setCurrentChatId] = useState<string | undefined>(undefined);
   const { user } = useUser();
   const { profile, setProfile } = useProfile();
+console.log(currentChatId,'currentId');
 
   const updateChatsIdInProfile = (chatID: string) => {
     if ((profile.chats as string[]).includes(chatID)) {
@@ -23,43 +24,48 @@ const ChatComponent: FunctionComponent<Props> = ({ firebase, targetID }) => {
     }
     const chats: string[] = [...profile.chats, chatID];
     const newProfile = { ...profile, chats };
-    // const newProfile = {...profile, chats};
-    // firebase.getUsers().doc(user.uid).set(newProfile, {merge:true}).then(res=> console.log(res));
     const document: GeoDocumentReference = firebase.getUsers().doc(user.uid);
     document
       .update({ chats: chats })
       .then(() => setProfile(newProfile as Profile));
   };
 
-  const chatIdExists = async (IDsArray: string[]) => {
-    let requests: any = [];
-    IDsArray.forEach((id:string) => {
-      requests.push(
-        firebase
-          .getChats()
-          .doc(id)
-          .get()
-      );
-    });
-    const result = await Promise.all(requests);
-    return !!result.length;
-  };
+  // const chatIdExists = async (IDsArray: string[]) => {
+  //   let requests: any = [];
+  //   IDsArray.forEach((id: string) => {
+  //     requests.push(
+  //       firebase
+  //         .getChats()
+  //         .doc(id)
+  //         .get()
+  //     );
+  //   });
+  //   const result = await Promise.all(requests);
+  //   return !!result.length;
+  // };
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
-   await chatIdExists(profile.chats);
-
-    // firebase
-    //   .getChats()
-    //   .add({ members: [targetID!.targetID, user.uid] })
-    //   .then(refID => {
-    //     console.log(refID.id);
-    //     updateChatsIdInProfile(refID.id);
-    //     refID
-    //       .collection("messages")
-    //       .doc()
-    //       .set({ message: message });
-    //   });
+    if (currentChatId) {
+      firebase
+        .getChats()
+        .doc(currentChatId)
+        .collection("messages")
+        .doc()
+        .set({ message: message });
+    } else {
+      firebase
+        .getChats()
+        .add({ members: [targetID!.targetID, user.uid] })
+        .then(refID => {
+          setCurrentChatId(refID.id);
+          updateChatsIdInProfile(refID.id);
+          refID
+            .collection("messages")
+            .doc()
+            .set({ message: message });
+        });
+    }
   };
 
   return (
