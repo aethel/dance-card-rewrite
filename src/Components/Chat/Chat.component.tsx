@@ -18,7 +18,7 @@ const ChatComponent: FunctionComponent<Props> = ({ firebase, targetID }) => {
   const { profile, setProfile } = useProfile();
 
   const updateChatsIdInProfile = (chatID: string) => {
-    if ((profile.chats as string[]).includes(chatID) ) {
+    if ((profile.chats as string[]).includes(chatID)) {
       return;
     }
     const chats: string[] = [...profile.chats, chatID];
@@ -30,22 +30,36 @@ const ChatComponent: FunctionComponent<Props> = ({ firebase, targetID }) => {
       .update({ chats: chats })
       .then(() => setProfile(newProfile as Profile));
   };
-  console.log(profile);
 
-  const submitHandler = (e: FormEvent) => {
+  const chatIdExists = async (IDsArray: string[]) => {
+    let requests: any = [];
+    IDsArray.forEach((id:string) => {
+      requests.push(
+        firebase
+          .getChats()
+          .doc(id)
+          .get()
+      );
+    });
+    const result = await Promise.all(requests);
+    return !!result.length;
+  };
+
+  const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(message);
-    firebase
-      .getChats()
-      .add({ members: [targetID!.targetID, user.uid] })
-      .then(refID => {
-        console.log(refID.id);
-        updateChatsIdInProfile(refID.id);
-        refID
-          .collection("messages")
-          .doc()
-          .set({ message: message });
-      });
+   await chatIdExists(profile.chats);
+
+    // firebase
+    //   .getChats()
+    //   .add({ members: [targetID!.targetID, user.uid] })
+    //   .then(refID => {
+    //     console.log(refID.id);
+    //     updateChatsIdInProfile(refID.id);
+    //     refID
+    //       .collection("messages")
+    //       .doc()
+    //       .set({ message: message });
+    //   });
   };
 
   return (

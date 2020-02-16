@@ -6,6 +6,7 @@ import { navigate } from '@reach/router';
 import { useGeo } from '../../Contexts/geolocation.context';
 import { Profile } from '../../Models/profile.models';
 import dances from '../../Constants/dances';
+import { toGeoPoint } from 'geofirestore/dist/utils';
 
 type Props = {
     firebase: Firebase
