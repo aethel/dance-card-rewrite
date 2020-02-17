@@ -56,9 +56,7 @@ const ChatComponent: FunctionComponent<Props> = ({ firebase, targetID }) => {
       firebase
         .getChats()
         .doc(currentChatId)
-        .collection("messages")
-        .doc()
-        .set({ message: message, timestamp:+new Date() });
+        .update({ messages: firebase.fieldValue.arrayUnion({ message: message, timestamp:+new Date() }) });
     } else {
       firebase
         .getChats()
@@ -66,10 +64,7 @@ const ChatComponent: FunctionComponent<Props> = ({ firebase, targetID }) => {
         .then(refID => {
           setCurrentChatId(refID.id);
           updateChatsIdInProfile(refID.id);
-          refID
-            .collection("messages")
-            .doc()
-            .set({ message: message, timestamp:+new Date() });
+          refID.update({ messages: firebase.fieldValue.arrayUnion({ message: message, timestamp:+new Date() }) });
         });
     }
   };
