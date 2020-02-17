@@ -45,7 +45,7 @@ return <Map style={{ width: '100%', height: '100vw' }} center={setDefaultLocatio
         {/* filter out current user? */}
         {props.markers.map((item: GeoFirestoreTypes.QueryDocumentSnapshot, index: number) => {
             const { coordinates, username, dances, uid } = item.data() as Profile;
-            console.log(item.data());
+            // console.log(item.data());
             
             const mapCoords = (coordinates:any): LatLngLiteral => {
                 return {lat: coordinates.latitude, lng: coordinates.longitude}

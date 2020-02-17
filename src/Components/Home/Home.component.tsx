@@ -5,6 +5,8 @@ import Firebase from '../../Firebase/firebase';
 import { GeoQuery, GeoQuerySnapshot } from 'geofirestore';
 import { GeoFirestoreTypes } from 'geofirestore/dist/GeoFirestoreTypes'
 import { LatLngLiteral } from 'leaflet';
+import { useUser } from '../../Contexts/user.context';
+
 type Props = {
     firebase: Firebase
 }
@@ -12,6 +14,7 @@ type Props = {
 export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
 
     const { location } = useGeo();
+    const { user } = useUser();
     const [localUsers, setLocalUsers] = useState<GeoFirestoreTypes.QueryDocumentSnapshot[]>([])
 
     const fetchLocalUsers = (place: LatLngLiteral, radius: number = 1000) => {
@@ -20,6 +23,19 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
         query.get().then((res: GeoQuerySnapshot) => {
             setLocalUsers(res.docs);
         }).catch(error => console.log(error));
+    }
+    console.log(user);
+    
+    if(user.uid) {
+
+            firebase.getChats().where('members','array-contains', user.uid).get().then(res => {
+                debugger
+                res.docs.forEach(chat => {
+                    debugger
+                    console.log(chat.data());
+                    
+                })
+            });
     }
 
     useEffect(() => {
