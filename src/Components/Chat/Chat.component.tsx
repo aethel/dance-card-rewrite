@@ -16,7 +16,6 @@ const ChatComponent: FunctionComponent<Props> = ({ firebase, targetID }) => {
   const [currentChatId, setCurrentChatId] = useState<string | undefined>(undefined);
   const { user } = useUser();
   const { profile, setProfile } = useProfile();
-console.log(currentChatId,'currentId');
 
   const updateChatsIdInProfile = (chatID: string) => {
     if ((profile.chats as string[]).includes(chatID)) {
@@ -24,11 +23,17 @@ console.log(currentChatId,'currentId');
     }
     const chats: string[] = [...profile.chats, chatID];
     const newProfile = { ...profile, chats };
-    const document: GeoDocumentReference = firebase.getUsers().doc(user.uid);
-    document
-      .update({ chats: chats })
-      .then(() => setProfile(newProfile as Profile));
+    
+    updateUsersChatIds(chatID,user.uid!).then(() => setProfile(newProfile as Profile)).catch(e => console.log(e)
+    );
+    updateUsersChatIds(chatID,targetID!.targetID).catch(e => console.log(e));
   };
+
+  const updateUsersChatIds = (chatID:string,userID: string):Promise<any> => {
+    const document: GeoDocumentReference = firebase.getUsers().doc(userID);
+   return document.update({ chats: firebase.fieldValue.arrayUnion(chatID) });
+  }
+
 
   // const chatIdExists = async (IDsArray: string[]) => {
   //   let requests: any = [];
@@ -44,6 +49,7 @@ console.log(currentChatId,'currentId');
   //   return !!result.length;
   // };
 
+
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
     if (currentChatId) {
@@ -52,7 +58,7 @@ console.log(currentChatId,'currentId');
         .doc(currentChatId)
         .collection("messages")
         .doc()
-        .set({ message: message });
+        .set({ message: message, timestamp:+new Date() });
     } else {
       firebase
         .getChats()
@@ -63,7 +69,7 @@ console.log(currentChatId,'currentId');
           refID
             .collection("messages")
             .doc()
-            .set({ message: message });
+            .set({ message: message, timestamp:+new Date() });
         });
     }
   };

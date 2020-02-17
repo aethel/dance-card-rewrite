@@ -19,6 +19,7 @@ class Firebase {
     private firestore: firebase.firestore.Firestore;
     private firestoreRef: any;
     private geofirestore: GeoFirestore;
+    public fieldValue: any;
 
     constructor() {
         app.initializeApp(firebaseConfig);
@@ -26,6 +27,7 @@ class Firebase {
         this.firestore = app.firestore();
         this.firestoreRef = app.firestore;
         this.geofirestore = new GeoFirestore(this.firestore);
+        this.fieldValue = app.firestore.FieldValue
     }
 
     doAnonymousSignIn = () => this.auth.signInAnonymously();

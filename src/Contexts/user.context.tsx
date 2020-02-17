@@ -28,7 +28,7 @@ export const UserProvider = ({ ...props }: Props) => {
     }, [])
 
 
-    const setUser = (newUser: UserProfile | undefined): void => {
+    const setUser = (newUser: UserProfile): void => {
         if (newUser) {setUserInState(newUser)} //merge rather than overwrite
     }
     
