@@ -24,19 +24,6 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
             setLocalUsers(res.docs);
         }).catch(error => console.log(error));
     }
-    console.log(user);
-    
-    if(user.uid) {
-
-            firebase.getChats().where('members','array-contains', user.uid).get().then(res => {
-                debugger
-                res.docs.forEach(chat => {
-                    debugger
-                    console.log(chat.data());
-                    
-                })
-            });
-    }
 
     useEffect(() => {
         if (!!Object.keys(location).length && !localUsers.length) {
