@@ -6,8 +6,6 @@ import HeaderComponent from '../Components/Header/Header.component';
 import { GeolocationProvider } from '../Contexts/geolocation.context';
 import { ProfileProvider } from '../Contexts/profile.context';
 import Firebase, { FirebaseContext } from '../Firebase/firebase';
-import { ProfilePage } from './Profile';
-import * as ROUTES from './../Constants/routes'
 
 const HomePage = (_: RouteComponentProps) => {
     return (
