@@ -1,9 +1,10 @@
 import React from 'react'
 import { RouteComponentProps } from '@reach/router'
 import Firebase, { FirebaseContext } from '../Firebase/firebase'
-import ChatComponent from '../Components/Chat/Chat.component'
+import ChatComponent from '../Components/ChatInput/ChatInput.component'
 import { UserProvider } from '../Contexts/user.context'
 import { ProfileProvider } from '../Contexts/profile.context'
+import ChatInputComponent from '../Components/ChatInput/ChatInput.component'
 
 
 export const ChatPage = ({location}:RouteComponentProps ) => {
@@ -13,7 +14,7 @@ export const ChatPage = ({location}:RouteComponentProps ) => {
                     return <UserProvider>
                         <ProfileProvider>
 
-                        <ChatComponent firebase={firebase} targetID={location!.state} />
+                        <ChatInputComponent firebase={firebase} targetID={location!.state} />
                         </ProfileProvider>
                     </UserProvider>
                 }

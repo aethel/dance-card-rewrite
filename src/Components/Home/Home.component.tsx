@@ -21,7 +21,8 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
         const geoPoint = place && firebase.getGeoPoint(place.lat, place.lng);
         const query: GeoQuery = firebase.getUsers().near({ center: geoPoint, radius: radius });
         query.get().then((res: GeoQuerySnapshot) => {
-            setLocalUsers(res.docs);
+            const usersWithoutCurrentUser = res.docs.filter(u => u.id !== user.uid);
+            setLocalUsers(usersWithoutCurrentUser);
         }).catch(error => console.log(error));
     }
 

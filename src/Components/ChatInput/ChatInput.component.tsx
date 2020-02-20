@@ -11,19 +11,19 @@ type Props = {
   targetID?: { [key: string]: string } | null;
 };
 
-const ChatComponent: FunctionComponent<Props> = ({ firebase, targetID }) => {
+const ChatInputComponent: FunctionComponent<Props> = ({ firebase, targetID }) => {
   const [message, setMessage] = useState<string>();
   const [currentChatId, setCurrentChatId] = useState<string | undefined>(undefined);
   const { user } = useUser();
   const { profile, setProfile } = useProfile();
-
+// take chat id and user id
   const updateChatsIdInProfile = (chatID: string) => {
     if ((profile.chats as string[]).includes(chatID)) {
       return;
     }
     const chats: string[] = [...profile.chats, chatID];
     const newProfile = { ...profile, chats };
-    
+    //if target id === user.uid, cancel
     updateUsersChatIds(chatID,user.uid!).then(() => setProfile(newProfile as Profile)).catch(e => console.log(e)
     );
     updateUsersChatIds(chatID,targetID!.targetID).catch(e => console.log(e));
@@ -56,7 +56,7 @@ const ChatComponent: FunctionComponent<Props> = ({ firebase, targetID }) => {
       firebase
         .getChats()
         .doc(currentChatId)
-        .update({ messages: firebase.fieldValue.arrayUnion({ message: message, timestamp:+new Date() }), last_updated: +new Date() });
+        .update({ messages: firebase.fieldValue.arrayUnion({ fromName: profile.username, fromID: user.uid, message: message, timestamp:+new Date() }), last_updated: +new Date() });
     } else {
       firebase
         .getChats()
@@ -64,7 +64,7 @@ const ChatComponent: FunctionComponent<Props> = ({ firebase, targetID }) => {
         .then(refID => {
           setCurrentChatId(refID.id);
           updateChatsIdInProfile(refID.id);
-          refID.update({ messages: firebase.fieldValue.arrayUnion({ message: message, timestamp:+new Date() }) });
+          refID.update({ messages: firebase.fieldValue.arrayUnion({ fromName: profile.username, fromID: user.uid, message: message, timestamp:+new Date() }) });
         });
     }
   };
@@ -83,4 +83,4 @@ const ChatComponent: FunctionComponent<Props> = ({ firebase, targetID }) => {
   );
 };
 
-export default ChatComponent;
+export default ChatInputComponent;
