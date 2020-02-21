@@ -8,13 +8,15 @@ import ChatInputComponent from '../Components/ChatInput/ChatInput.component'
 
 
 export const ChatPage = ({location}:RouteComponentProps ) => {
+    console.log(location!.state);
+    
     return (
             <FirebaseContext.Consumer>{
                 (firebase: Firebase) => {
                     return <UserProvider>
                         <ProfileProvider>
 
-                        <ChatInputComponent firebase={firebase} targetID={location!.state} />
+                        <ChatInputComponent firebase={firebase} routeProps={location!.state} />
                         </ProfileProvider>
                     </UserProvider>
                 }

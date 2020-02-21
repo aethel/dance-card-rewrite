@@ -13,6 +13,7 @@ import { GeoFirestoreTypes } from "geofirestore/dist/GeoFirestoreTypes";
 import { Profile } from "../../Models/profile.models";
 import { Link } from "@reach/router";
 import ChatInputComponent from "../ChatInput/ChatInput.component";
+import * as ROUTES from '../../Constants/routes'
 import  './ChatsList.component.css'
 
 type Props = {
@@ -62,15 +63,16 @@ const ChatsListComponent: FunctionComponent<Props> = ({
       {state?.map(
         (item: firebase.firestore.QueryDocumentSnapshot, index: number) => {
           const messages = item.data().messages;
+          const existingChatID:string = item.id;
           const targetUserID = () =>
             item.data().members.find((id: string) => id !== user.uid);
           return (
             <div className='chatBox' key={`${index}${targetID}`}>
-                {messages.map((item: {message:string, timestamp: number}, index:number) => 
-                  (<p key={`${index}`}>{item.message}</p>)
+                {messages.map((item: {message:string, timestamp: number, fromName: string}, index:number) => 
+                  (<div key={`${index}`}><span> From: {item.fromName}</span> <p>{item.message}</p></div>)
                 )}
-              <ChatInputComponent firebase={firebase} targetID={targetUserID()} />
-              <Link to={""}>Go to chat with {item.id}</Link>
+              {/* <ChatInputComponent firebase={firebase} routeProps={targetUserID()} /> */}
+              <Link to={ROUTES.CHAT} state={{ targetUserID: targetUserID(), existingChatID: existingChatID }}>Go to chat</Link>
             </div>
           );
         }
