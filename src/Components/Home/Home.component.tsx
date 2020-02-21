@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent, useEffect, useState } from 'react'
+import React, { Fragment, FunctionComponent, useEffect, useState, FormEvent, ChangeEvent } from 'react'
 import { LeafletMap } from '../Map/Map.component';
 import { useGeo } from '../../Contexts/geolocation.context';
 import Firebase from '../../Firebase/firebase';
@@ -16,27 +16,34 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
     const { location } = useGeo();
     const { user } = useUser();
     const [localUsers, setLocalUsers] = useState<GeoFirestoreTypes.QueryDocumentSnapshot[]>([])
+    const [radius, setRadius] = useState<number>(1000);
 
-    const fetchLocalUsers = (place: LatLngLiteral, radius: number = 1000) => {
+    const fetchLocalUsers = (place: LatLngLiteral, radius:number) => {
         const geoPoint = place && firebase.getGeoPoint(place.lat, place.lng);
-        const query: GeoQuery = firebase.getUsers().near({ center: geoPoint, radius: radius });
+        const query: GeoQuery = firebase.getUsers().near({ center: geoPoint, radius });
         query.get().then((res: GeoQuerySnapshot) => {
             const usersWithoutCurrentUser = res.docs.filter(u => u.id !== user.uid);
             setLocalUsers(usersWithoutCurrentUser);
         }).catch(error => console.log(error));
     }
 
+    const radiusSliderHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setRadius(+e.target.value);
+    }
+
     useEffect(() => {
         if (!!Object.keys(location).length && !localUsers.length) {
-            fetchLocalUsers(location);
+            fetchLocalUsers(location, radius);
         }
-    }, [location])
+    }, [location, radius])
 
 
     return (
         <Fragment>
+            {radius}
             <div>home comp</div>
-            <LeafletMap centre={location} markers={localUsers} />
+            <input type='range' name="radius" defaultValue={radius} min='2' max='100000' onChange={radiusSliderHandler} />
+            <LeafletMap radius={radius} centre={location} markers={localUsers} />
         </Fragment>
     )
 }
