@@ -15,6 +15,7 @@ import { Link } from "@reach/router";
 import ChatInputComponent from "../ChatInput/ChatInput.component";
 import * as ROUTES from '../../Constants/routes'
 import  './ChatsList.component.css'
+import { useMsgNotification } from "../../Contexts/messageNotification.context";
 
 type Props = {
   firebase: Firebase;
@@ -28,6 +29,7 @@ const ChatsListComponent: FunctionComponent<Props> = ({
   // QueryDocumentSnapshot
   const [state, setState] = useState<[]>();
   const { user } = useUser();
+  const { msg } = useMsgNotification();
 
   useEffect(() => {
     let unsubscribe: any = undefined;
@@ -41,7 +43,7 @@ const ChatsListComponent: FunctionComponent<Props> = ({
         });
     }
     // return () => unsubscribe()
-  }, [user]);
+  }, [user,msg]);
   // const chatIdExists = async (IDsArray: string[]) => {
   //   let requests: any = [];
   //   IDsArray.forEach((id: string) => {
@@ -67,13 +69,14 @@ const ChatsListComponent: FunctionComponent<Props> = ({
           const targetUserID = () =>
             item.data().members.find((id: string) => id !== user.uid);
           return (
-            <div className='chatBox' key={`${index}${targetID}`}>
+            <details className='chatBox' key={`${index}${targetID}`}>
+              <summary>{messages[0].fromName}, {new Date(messages[0].timestamp).toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</summary>
                 {messages.map((item: {message:string, timestamp: number, fromName: string}, index:number) => 
                   (<div key={`${index}`}><span> From: {item.fromName}</span> <p>{item.message}</p></div>)
                 )}
-              {/* <ChatInputComponent firebase={firebase} routeProps={targetUserID()} /> */}
-              <Link to={ROUTES.CHAT} state={{ targetUserID: targetUserID(), existingChatID: existingChatID }}>Go to chat</Link>
-            </div>
+                <ChatInputComponent firebase={firebase} routeProps={{ targetUserID: targetUserID(), existingChatID }} />
+              {/* <Link to={ROUTES.CHAT} state={{ targetUserID: targetUserID(), existingChatID: existingChatID }}>Go to chat</Link> */}
+            </details>
           );
         }
       )}

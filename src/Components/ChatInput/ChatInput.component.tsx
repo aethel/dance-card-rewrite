@@ -47,20 +47,6 @@ useEffect(() => {
     return document.update({ chats: firebase.fieldValue.arrayUnion(chatID) });
   };
 
-  // const chatIdExists = async (IDsArray: string[]) => {
-  //   let requests: any = [];
-  //   IDsArray.forEach((id: string) => {
-  //     requests.push(
-  //       firebase
-  //         .getChats()
-  //         .doc(id)
-  //         .get()
-  //     );
-  //   });
-  //   const result = await Promise.all(requests);
-  //   return !!result.length;
-  // };
-
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
     if (currentChatId) {
