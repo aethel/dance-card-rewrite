@@ -55,11 +55,9 @@ export const LeafletMap = (props: Props) => {
         fillColor="blue"
         radius={props.radius*1000}
       />
-      {/* filter out current user? */}
       {props.markers.map(
         (item: GeoFirestoreTypes.QueryDocumentSnapshot, index: number) => {
           const { coordinates, username, dances, uid } = item.data() as Profile;
-          // console.log(item.data());
 
           const mapCoords = (coordinates: any): LatLngLiteral => {
             return { lat: coordinates.latitude, lng: coordinates.longitude };
