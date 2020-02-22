@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent, useEffect, useState, FormEvent, ChangeEvent } from 'react'
+import React, { Fragment, FunctionComponent, useEffect, useState, ChangeEvent } from 'react'
 import { LeafletMap } from '../Map/Map.component';
 import { useGeo } from '../../Contexts/geolocation.context';
 import Firebase from '../../Firebase/firebase';
@@ -33,7 +33,6 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
 
     useEffect(() => {
         if (!!Object.keys(location).length) {
-            // setLocalUsers([]);
             fetchLocalUsers(location, radius);
         }
     }, [location, radius])
@@ -42,7 +41,6 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
     return (
         <Fragment>
             <span>Search radius: {radius}km</span>
-            <div>home comp</div>
             <input type='range' name="radius" defaultValue={radius} min='1' step='1' max='20' onChange={radiusSliderHandler} />
             <LeafletMap radius={radius} centre={location} markers={localUsers} />
         </Fragment>
