@@ -16,15 +16,15 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
     const { location } = useGeo();
     const { user } = useUser();
     const [localUsers, setLocalUsers] = useState<GeoFirestoreTypes.QueryDocumentSnapshot[]>([])
-    const [radius, setRadius] = useState<number>(1000);
+    const [radius, setRadius] = useState<number>(2);
 
     const fetchLocalUsers = (place: LatLngLiteral, radius:number) => {
         const geoPoint = place && firebase.getGeoPoint(place.lat, place.lng);
         const query: GeoQuery = firebase.getUsers().near({ center: geoPoint, radius });
-        query.get().then((res: GeoQuerySnapshot) => {
+        query.onSnapshot((res: GeoQuerySnapshot) => {
             const usersWithoutCurrentUser = res.docs.filter(u => u.id !== user.uid);
             setLocalUsers(usersWithoutCurrentUser);
-        }).catch(error => console.log(error));
+        });
     }
 
     const radiusSliderHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +32,8 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
     }
 
     useEffect(() => {
-        if (!!Object.keys(location).length && !localUsers.length) {
+        if (!!Object.keys(location).length) {
+            // setLocalUsers([]);
             fetchLocalUsers(location, radius);
         }
     }, [location, radius])
@@ -40,9 +41,9 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
 
     return (
         <Fragment>
-            {radius}
+            <span>Search radius: {radius}km</span>
             <div>home comp</div>
-            <input type='range' name="radius" defaultValue={radius} min='2' max='100000' onChange={radiusSliderHandler} />
+            <input type='range' name="radius" defaultValue={radius} min='1' step='1' max='20' onChange={radiusSliderHandler} />
             <LeafletMap radius={radius} centre={location} markers={localUsers} />
         </Fragment>
     )

@@ -6,7 +6,7 @@ import L from "leaflet";
 import { isObjectWithValue } from "../../Utils/object";
 import { GeoFirestoreTypes } from "geofirestore";
 import CustomPopup from "../CustomPopup/CustomPopup.component";
-import { Link, navigate } from "@reach/router";
+import { Link } from "@reach/router";
 import * as ROUTES from "../../Constants/routes";
 import { Profile } from "../../Models/profile.models";
 
@@ -53,7 +53,7 @@ export const LeafletMap = (props: Props) => {
       <Circle
         center={setDefaultLocation()}
         fillColor="blue"
-        radius={props.radius}
+        radius={props.radius*1000}
       />
       {/* filter out current user? */}
       {props.markers.map(
