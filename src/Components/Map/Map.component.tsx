@@ -58,10 +58,10 @@ export const LeafletMap = (props: Props) => {
       {props.markers.map(
         (item: GeoFirestoreTypes.QueryDocumentSnapshot, index: number) => {
           const { coordinates, username, dances, uid } = item.data() as Profile;
-
           const mapCoords = (coordinates: any): LatLngLiteral => {
             return { lat: coordinates.latitude, lng: coordinates.longitude };
           };
+
           return (
             <Marker key={index} position={mapCoords(coordinates)}>
               <Popup>

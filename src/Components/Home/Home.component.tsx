@@ -25,6 +25,7 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
             const usersWithoutCurrentUser = res.docs.filter(u => u.id !== user.uid).filter(user => 
                 user.data().active
              );
+             
             setLocalUsers(usersWithoutCurrentUser);
         });
     }
