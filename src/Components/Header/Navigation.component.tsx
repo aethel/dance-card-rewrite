@@ -3,7 +3,7 @@ import Firebase from '../../Firebase/firebase'
 import { navigate, Link } from '@reach/router'
 import * as ROUTES from '../../Constants/routes'
 import { useUser } from '../../Contexts/user.context'
-
+import './Navigation.component.css'
 type Props = {
     firebase: Firebase
 }
@@ -15,9 +15,9 @@ const NavigationComponent: FunctionComponent<Props> = ({ firebase }: Props) => {
         <nav>
         {/* {isLoggedIn ?
             <Fragment>  */}
-            <Link to={ROUTES.HOME}>Home</Link>
-            <Link to={ROUTES.PROFILE}>Profile</Link>
-            <Link to={ROUTES.CHATS}>Chats</Link>
+            <Link className='navigationItem' to={ROUTES.HOME}>Home</Link>
+            <Link className='navigationItem' to={ROUTES.PROFILE}>Profile</Link>
+            <Link className='navigationItem' to={ROUTES.CHATS}>Chats</Link>
                     <button onClick={() => {
                         firebase.doSignOut();
                         clearUser();
