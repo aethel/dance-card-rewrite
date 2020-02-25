@@ -23,6 +23,7 @@ const ChatInputComponent: FunctionComponent<Props> = ({ ...props }) => {
   const { profile, setProfile } = useProfile();
 
 useEffect(() => {
+  console.log(targetUserID, existingChatID );
   if(existingChatID) {
     setCurrentChatId(existingChatID);
   }
@@ -63,6 +64,7 @@ useEffect(() => {
           last_updated: +new Date()
         });
     } else {
+      console.log(targetUserID, existingChatID, 'calling' );
       firebase
         .getChats()
         .add({ members: [targetUserID, user.uid], last_updated: +new Date() })

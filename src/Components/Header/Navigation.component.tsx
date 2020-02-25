@@ -20,7 +20,7 @@ const NavigationComponent: FunctionComponent<Props> = ({ firebase }: Props) => {
             <Link className='navigationItem' to={ROUTES.CHATS}>Chats</Link>
                     <button onClick={() => {
                         firebase.doSignOut();
-                        clearUser();
+                        localStorage.clear();
                         navigate(ROUTES.LOG_IN)
                     }}>logout</button>
             {/* </Fragment>
