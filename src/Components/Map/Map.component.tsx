@@ -68,7 +68,6 @@ export const LeafletMap = (props: Props) => {
                 <strong>{username}</strong>
                 <br />
                 <CustomPopup dances={dances} />
-                {uid}
                 <Link to={ROUTES.CHAT} state={{ targetUserID: uid }}>
                   Message
                 </Link>
