@@ -35,7 +35,6 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
     }
 
     useEffect(() => {
-        console.info(location,'location change')
         if (!!Object.keys(location).length) {
             fetchLocalUsers(location, radius);
         }

@@ -11,6 +11,7 @@ import { ProfilePage } from './Pages/Profile';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute.component';
 import { ChatPage } from './Pages/Chat';
 import { ChatsListPage } from './Pages/ChatsList';
+import { SingleChatPage } from './Pages/SingleChat';
 function App() {
   const { auth } = useAuth(); 
 console.log(auth,'app');
@@ -24,6 +25,7 @@ console.log(auth,'app');
       <PrivateRoute as={ProfilePage} path={ROUTES.PROFILE}/>
       <PrivateRoute as={ChatPage} path={ROUTES.CHAT}/>
       <PrivateRoute as={ChatsListPage} path={ROUTES.CHATS}/>
+      <PrivateRoute as={SingleChatPage} path={ROUTES.SINGLE_CHAT}/>
       </Router>
   );
 
