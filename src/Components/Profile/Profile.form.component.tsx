@@ -1,10 +1,11 @@
 import React, { FunctionComponent, Fragment } from "react";
 import { useForm } from "react-hook-form";
-import Dances, { Dance } from "../../Constants/dances";
+import * as ROUTES from '../../Constants/routes'
 import { useUser } from "../../Contexts/user.context";
 import Firebase from "../../Firebase/firebase";
 import { Profile } from "../../Models/profile.models";
 import { useProfile } from "../../Contexts/profile.context";
+import { navigate } from "@reach/router";
 
 type Props = {
   firebase: Firebase;
@@ -23,6 +24,7 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
         .then(
           docRef => {
             setProfile(data);
+            navigate(ROUTES.HOME)
           },
           error => console.log(error)
         );
