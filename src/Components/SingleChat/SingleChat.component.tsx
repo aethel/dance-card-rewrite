@@ -8,58 +8,70 @@ import React, {
 import Firebase from "../../Firebase/firebase";
 import { useUser } from "../../Contexts/user.context";
 import ChatInputComponent from "../ChatInput/ChatInput.component";
-import { useMsgNotification } from "../../Contexts/messageNotification.context";
 
 type Props = {
   firebase: Firebase;
   routeProps?: any;
 };
 
-const SingleChatComponent: FunctionComponent<Props> = ({...props}) => {
+const SingleChatComponent: FunctionComponent<Props> = ({ ...props }) => {
   // QueryDocumentSnapshot
-  const   {firebase } = props;
-  const   {targetChatID} = props.routeProps;
-  const [state, setState] = useState<[]>();
+  const { firebase } = props;
+  const { targetChatID } = props.routeProps;
+  const [state, setState] = useState<any>();
   const { user } = useUser();
-  const { msg } = useMsgNotification();
-console.log(targetChatID);
+  const existingChatID: string = state?.id || 'abc';
+  const targetUserID = () =>
+    state?.data().members.find((id: string) => id !== user.uid);
 
   useEffect(() => {
-    let unsubscribe: any = undefined;
-    if (user?.uid) {
-      unsubscribe = firebase!
-        .getChats()
-        .where("members", "array-contains", user.uid)
-        .get()
-        .then((res: firebase.firestore.DocumentData) => {
-          setState(res.docs);
-        });
-    }
-    // return () => unsubscribe()
-  }, [user,msg]);
-  
+    const unsubscribe: any = firebase!
+      .getChats()
+      .doc(targetChatID)
+      .onSnapshot((res: any) => {
+          setState(res);
+      });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <div>
-      {!state?.length && <p>no chats</p>}
-      {state?.map(
-        (item: firebase.firestore.QueryDocumentSnapshot, index: number) => {
-          const messages = item.data().messages;
-          
-          const existingChatID:string = item.id;
-          const targetUserID = () =>
-            item.data().members.find((id: string) => id !== user.uid);
+      {!state?.length && <p>no chat</p>}
+      {state?.data().messages.map(
+        (item: any, index: number) => {
           return (
-            <details className='chatBox' key={`${index}${targetChatID}`}>
-              <summary>{messages[0].fromName}, {new Date(messages[0].timestamp).toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</summary>
-                {messages.map((item: {message:string, timestamp: number, fromName: string}, index:number) => 
-                  (<div key={`${index}`}><span> From: {item.fromName}</span> <p>{item.message}</p></div>)
-                )}
-                <ChatInputComponent firebase={firebase} routeProps={{ targetUserID: targetUserID(), existingChatID }} />
-            
-            </details>
+            // <details className="chatBox" key={`${index}${targetChatID}`}>
+            //   <summary>
+            //     {item[0].fromName},{" "}
+            //     {new Date(item[0].timestamp).toLocaleDateString("en-GB", {
+            //       weekday: "long",
+            //       year: "numeric",
+            //       month: "long",
+            //       day: "numeric",
+            //       hour: "numeric",
+            //       minute: "numeric"
+            //     })}
+            //   </summary>
+            //        <div>
+            //         <span> From: {item.fromName}</span> <p>{item.message}</p>
+            //       </div>
+         
+            //   <ChatInputComponent
+            //     firebase={firebase}
+            //     routeProps={{ targetUserID: targetUserID(), existingChatID }}
+            //   />
+            // </details>
+            <div key={`${index}${targetChatID}`}>
+                < span> From: {item.fromName}</span> <p>{item.message}</p>
+         
+            </div>
           );
         }
-      )}
+        )}
+        <ChatInputComponent
+          firebase={firebase}
+          routeProps={{ targetUserID: targetUserID(), existingChatID }}
+        />
     </div>
   );
 };
