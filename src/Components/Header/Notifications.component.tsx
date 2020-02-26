@@ -5,7 +5,6 @@ import * as ROUTES from "../../Constants/routes";
 
 const NotificationComponent: FunctionComponent = () => {
   const { msg } = useMsgNotification();
-  debugger;
   const lastMessage = msg?.exists
     ? msg?.data().messages[msg?.data().messages.length - 1].message
     : undefined;

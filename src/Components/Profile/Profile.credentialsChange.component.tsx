@@ -59,7 +59,7 @@ const ProfileCredentialsChangeComponent: FunctionComponent<Props> = ({
   // };
 
   return (
-    <Fragment>
+    <div className='container'>
       <form onSubmit={handleSubmit(updateEmail)}>
         <legend>Update email</legend>
         <ul>
@@ -97,7 +97,7 @@ const ProfileCredentialsChangeComponent: FunctionComponent<Props> = ({
       </form> */}
       {errors && console.log(errors)}
       {localError && <p>{localError}</p>}
-    </Fragment>
+    </div>
   );
 };
 export default ProfileCredentialsChangeComponent;

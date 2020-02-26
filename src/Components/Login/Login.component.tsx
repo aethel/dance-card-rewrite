@@ -23,7 +23,8 @@ export const LoginComponent: FunctionComponent<Props> = ({ firebase }: Props) =>
     }
 
     return (
-        <Fragment>
+        <div className='container'>
+            <br/>
             <form onSubmit={handleSubmit(submitHandler)}>
                 <input name='email' type="email" placeholder='email' ref={register({ required: true })} />
                 <input name='password' type="password" placeholder='password' ref={register({ required: true })} />
@@ -31,6 +32,6 @@ export const LoginComponent: FunctionComponent<Props> = ({ firebase }: Props) =>
                 <button type='submit'>log in</button>
             </form>
             <Link to={ROUTES.SIGN_UP}>No account? Register.</Link>
-        </Fragment>
+        </div>
     )
 }

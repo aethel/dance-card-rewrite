@@ -38,7 +38,7 @@ export const LeafletMap = (props: Props) => {
 
   return (
     <Map
-      style={{ width: "100%", height: "100vw" }}
+      style={{ width: "100%", height: "90vw" }}
       center={setDefaultLocation()}
       zoom={13}
     >

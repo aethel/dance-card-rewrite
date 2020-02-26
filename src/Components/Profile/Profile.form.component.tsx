@@ -1,12 +1,12 @@
 import React, { FunctionComponent, Fragment } from "react";
 import { useForm } from "react-hook-form";
-import * as ROUTES from '../../Constants/routes'
+import * as ROUTES from "../../Constants/routes";
 import { useUser } from "../../Contexts/user.context";
 import Firebase from "../../Firebase/firebase";
 import { Profile } from "../../Models/profile.models";
 import { useProfile } from "../../Contexts/profile.context";
 import { navigate } from "@reach/router";
-
+import "./Profile.form.component.css";
 type Props = {
   firebase: Firebase;
 };
@@ -24,7 +24,7 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
         .then(
           docRef => {
             setProfile(data);
-            navigate(ROUTES.HOME)
+            navigate(ROUTES.HOME);
           },
           error => console.log(error)
         );
@@ -32,7 +32,7 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
   };
 
   return (
-    <Fragment>
+    <div className="container">
       <form onSubmit={handleSubmit(onSubmit)}>
         <legend>Profile</legend>
         <ul>
@@ -76,26 +76,33 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
               const danceName: string = dance[0];
               const positionsObj: any = dance[1];
               return (
-                <li key={index}>
-                  {danceName}
-                  <label>
-                    Lead
+                <li key={index} className="row">
+                  <span className="column column-30">{danceName}</span>
+
+                  <span className="row">
+                    <label htmlFor={danceName}>
+                      Lead
+                    </label>
                     <input
                       type="checkbox"
                       ref={register}
+                      id={danceName}
                       defaultChecked={positionsObj.lead}
                       name={`dances.${danceName}.lead`}
                     />
-                  </label>
-                  <label>
-                    Follow
+                  </span>
+                  <span className="row">
+                    <label htmlFor={danceName}>
+                      Follow
+                    </label>
                     <input
                       type="checkbox"
                       ref={register}
+                      id={danceName}
                       defaultChecked={positionsObj.follow}
                       name={`dances.${danceName}.follow`}
                     />
-                  </label>
+                  </span>
                 </li>
               );
             })}
@@ -103,7 +110,7 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
         <button type="submit">Update</button>
       </form>
       {errors && console.log(errors)}
-    </Fragment>
+    </div>
   );
 };
 export default ProfileFormComponent;

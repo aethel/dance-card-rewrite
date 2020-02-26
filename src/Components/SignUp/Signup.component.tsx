@@ -37,7 +37,8 @@ export const SignUpComponent: FunctionComponent<Props> = ({ firebase }: Props) =
     }
 
     return (
-        <Fragment>
+        <div className='container'>
+            <br />
             {location ? (<form onSubmit={handleSubmit(submitHandler)}>
                 <input required name='username' type='text' placeholder='username' ref={register({ required: true })} />
                 <input required name='email' type='email' placeholder='email' ref={register({ required: true })} />
@@ -45,8 +46,7 @@ export const SignUpComponent: FunctionComponent<Props> = ({ firebase }: Props) =
                 {errors.email && <span>email is required</span>}
                 <button type='submit'>Register</button>
             </form>) : <span>no geolocation</span> }
-            
-        </Fragment>
+        </div>
     )
 }
 
