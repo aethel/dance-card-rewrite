@@ -1,16 +1,7 @@
 import React, { Fragment, FunctionComponent, useState, useEffect } from 'react'
-import { LoginComponent } from '../Login/Login.component'
 import * as ROUTES from '../../Constants/routes'
-import { SignUpComponent } from '../SignUp/Signup.component'
 import Firebase from '../../Firebase/firebase'
 import { RouteComponentProps, navigate, Router } from '@reach/router'
-import { useUser } from '../../Contexts/user.context'
-import Home from '../../Pages/Home'
-import { LandingPage } from '../../Pages/Landing'
-import { LoginPage } from '../../Pages/Login'
-import { SignUpPage } from '../../Pages/Signup'
-import HomePage from '../../Pages/Home'
-import { ProfilePage } from '../../Pages/Profile'
 import { useAuth } from '../../Contexts/auth.context'
 
 type Props = {
@@ -19,9 +10,6 @@ type Props = {
 
 export const LandingComponent: FunctionComponent<Props> = ({firebase}: Props & RouteComponentProps) => {
     const {auth} = useAuth(); 
-
-    console.log(auth, 'METH');
-
 
 
     useEffect(() => {

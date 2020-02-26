@@ -3,9 +3,7 @@ import Firebase from "../../Firebase/firebase";
 import { useUser } from "../../Contexts/user.context";
 import { useProfile } from "../../Contexts/profile.context";
 import { GeoDocumentReference } from "geofirestore/dist/GeoDocumentReference";
-import { GeoFirestoreTypes } from "geofirestore/dist/GeoFirestoreTypes";
 import { Profile } from "../../Models/profile.models";
-import { RouterProps } from "@reach/router";
 
 type Props = {
   firebase: Firebase;

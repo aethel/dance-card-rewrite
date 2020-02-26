@@ -24,20 +24,6 @@ export const GeolocationProvider = ({ ...props }: Props) => {
 
     const onChange = ({ coords }: any) => {
         if (mounted) {
-            // setLocation((prevState): LatLngLiteral |null => {
-            //     // console.log(prevState, 'prevState');
-            //     // console.log(coords, 'coords');
-            //     // console.log(Object.is(prevState.lng, coords.longitude), 'obj ln is');
-            //     // console.log(prevState.lng === coords.longitude, 'com lngs');
-            //     if (Object.is(prevState!.lng, coords.longitude) && Object.is(prevState!.lat, coords.latitude)) {
-            //         return null
-            //     } else {
-            //         return {
-            //             lat: coords.latitude,
-            //             lng: coords.longitude,
-            //         }
-            //     }
-            // });
             setLocation({
                 lat: coords.latitude,
                 lng: coords.longitude,

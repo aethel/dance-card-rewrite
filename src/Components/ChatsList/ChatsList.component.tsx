@@ -1,14 +1,8 @@
-import React, {
-  FunctionComponent,
-  useState,
-  FormEvent,
-  useEffect,
-  Fragment
-} from "react";
+import React, { FunctionComponent, useState, useEffect } from "react";
 import Firebase from "../../Firebase/firebase";
 import { useUser } from "../../Contexts/user.context";
 import ChatInputComponent from "../ChatInput/ChatInput.component";
-import  './ChatsList.component.css'
+import "./ChatsList.component.css";
 import { useMsgNotification } from "../../Contexts/messageNotification.context";
 
 type Props = {
@@ -37,22 +31,7 @@ const ChatsListComponent: FunctionComponent<Props> = ({
         });
     }
     // return () => unsubscribe()
-  }, [user,msg]);
-  // const chatIdExists = async (IDsArray: string[]) => {
-  //   let requests: any = [];
-  //   IDsArray.forEach((id: string) => {
-  //     requests.push(
-  //       firebase
-  //         .getChats()
-  //         .doc(id)
-  //         .get()
-  //     );
-  //   });
-  //   const result = await Promise.all(requests);
-  //   return !!result.length;
-  // };
-
-  // console.log(item.data().messages)
+  }, [user, msg]);
   return (
     <div>
       {!state?.length && <p>no chats</p>}
@@ -60,19 +39,41 @@ const ChatsListComponent: FunctionComponent<Props> = ({
         (item: firebase.firestore.QueryDocumentSnapshot, index: number) => {
           const messages = item.data().messages;
           const read = item.data().messages.length;
-          console.log(read, 'read messages', item.id, 'chat id');
-          
-          const existingChatID:string = item.id;
+
+          const existingChatID: string = item.id;
           const targetUserID = () =>
             item.data().members.find((id: string) => id !== user.uid);
           return (
-            <details className='chatBox' key={`${index}${targetID}`}>
-              <summary>{messages[0].fromName}, {new Date(messages[0].timestamp).toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</summary>
-                {messages.map((item: {message:string, timestamp: number, fromName: string}, index:number) => 
-                  (<div key={`${index}`}><span> From: {item.fromName}</span> <p>{item.message}</p></div>)
-                )}
-                <ChatInputComponent firebase={firebase} routeProps={{ targetUserID: targetUserID(), existingChatID }} />
-              {/* <Link to={ROUTES.CHAT} state={{ targetUserID: targetUserID(), existingChatID: existingChatID }}>Go to chat</Link> */}
+            <details className="chatBox" key={`${index}${targetID}`}>
+              <summary>
+                {messages[0].fromName},{" "}
+                {new Date(messages[0].timestamp).toLocaleDateString("en-GB", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "numeric",
+                  minute: "numeric"
+                })}
+              </summary>
+              {messages.map(
+                (
+                  item: {
+                    message: string;
+                    timestamp: number;
+                    fromName: string;
+                  },
+                  index: number
+                ) => (
+                  <div key={`${index}`}>
+                    <span> From: {item.fromName}</span> <p>{item.message}</p>
+                  </div>
+                )
+              )}
+              <ChatInputComponent
+                firebase={firebase}
+                routeProps={{ targetUserID: targetUserID(), existingChatID }}
+              />
             </details>
           );
         }

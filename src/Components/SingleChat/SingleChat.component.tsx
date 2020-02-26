@@ -1,9 +1,7 @@
 import React, {
   FunctionComponent,
   useState,
-  FormEvent,
   useEffect,
-  Fragment
 } from "react";
 import Firebase from "../../Firebase/firebase";
 import { useUser } from "../../Contexts/user.context";

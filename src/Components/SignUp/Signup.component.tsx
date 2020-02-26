@@ -5,8 +5,6 @@ import { useForm, OnSubmit } from 'react-hook-form'
 import { navigate } from '@reach/router';
 import { useGeo } from '../../Contexts/geolocation.context';
 import { Profile } from '../../Models/profile.models';
-import dances from '../../Constants/dances';
-import { toGeoPoint } from 'geofirestore/dist/utils';
 
 type Props = {
     firebase: Firebase
@@ -30,15 +28,6 @@ export const SignUpComponent: FunctionComponent<Props> = ({ firebase }: Props) =
                         email: res.user.email,
                         coordinates: getGeoPoint(location.lat, location.lng)};
 
-                    // {
-                    //     username: username,
-                    //     email: res.user.email,
-                    //     coordinates: getGeoPoint(location.lat, location.lng),
-                    //     dances: [],
-                    //     active: true,
-                    //     chats: [],
-                    //     uid: res.user.uid
-                    // };
                     firebase.getUsers().doc(res.user.uid).set(doc).then(docRef => {
                         navigate(ROUTES.LOG_IN)
                     }, error => console.log(error))
