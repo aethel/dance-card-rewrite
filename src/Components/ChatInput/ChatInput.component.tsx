@@ -80,12 +80,11 @@ useEffect(() => {
   };
 
   return (
-    <form onSubmit={submitHandler}>
-      is a chat
+    <form onSubmit={submitHandler} className='container'>
       <input
         type="text"
         name="message"
-        placeholder="write message"
+        placeholder="Write message"
         onChange={event => setMessage(event.target.value)}
       />
       <button type="submit">send</button>

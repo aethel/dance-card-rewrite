@@ -34,12 +34,12 @@ const SingleChatComponent: FunctionComponent<Props> = ({ ...props }) => {
   }, []);
 
   return (
-    <div>
+    <div className='container'>
       {!state && <p>no chat</p>}
       {state?.data().messages.map((item: any, index: number) => {
         return (
-          <div key={`${index}${targetChatID}`}>
-            <span> From: {item.fromName}</span> <p>{item.message}</p>
+          <div key={`${index}${targetChatID}`} className={item.fromID === user.uid ? 'messageBoxFrom': 'messageBoxTo' }>
+            <strong> From: {item.fromName}</strong> <p>{item.message}</p>
           </div>
         );
       })}

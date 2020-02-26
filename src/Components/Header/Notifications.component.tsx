@@ -12,12 +12,12 @@ const NotificationComponent: FunctionComponent = () => {
     <Fragment>
       {lastMessage && (
         <Fragment>
-          <p>Latest message: {lastMessage}</p>
+          <span>Latest message: <strong>{lastMessage}</strong> </span>
           <Link to={ROUTES.SINGLE_CHAT} state={{ targetChatID: msg.id }}>
             Go to chat
           </Link>
         </Fragment>
-      )}
+       )} 
     </Fragment>
   );
 };
