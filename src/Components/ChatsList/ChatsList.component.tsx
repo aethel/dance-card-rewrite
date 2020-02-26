@@ -33,7 +33,7 @@ const ChatsListComponent: FunctionComponent<Props> = ({
     // return () => unsubscribe()
   }, [user, msg]);
   return (
-    <div>
+    <div className='container'>
       {!state?.length && <p>no chats</p>}
       {state?.map(
         (item: firebase.firestore.QueryDocumentSnapshot, index: number) => {
@@ -44,7 +44,7 @@ const ChatsListComponent: FunctionComponent<Props> = ({
           const targetUserID = () =>
             item.data().members.find((id: string) => id !== user.uid);
           return (
-            <details className="chatBox" key={`${index}${targetID}`}>
+            <details className="container" key={`${index}${targetID}`}>
               <summary>
                 {messages[0].fromName},{" "}
                 {new Date(messages[0].timestamp).toLocaleDateString("en-GB", {
@@ -62,11 +62,12 @@ const ChatsListComponent: FunctionComponent<Props> = ({
                     message: string;
                     timestamp: number;
                     fromName: string;
+                    fromID: string;
                   },
                   index: number
                 ) => (
-                  <div key={`${index}`}>
-                    <span> From: {item.fromName}</span> <p>{item.message}</p>
+                  <div className={item.fromID === user.uid ? 'messageBoxFrom': 'messageBoxTo' } key={`${index}`}>
+                    <strong> From: {item.fromName}</strong> <p>{item.message}</p>
                   </div>
                 )
               )}
