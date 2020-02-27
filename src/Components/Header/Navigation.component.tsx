@@ -23,7 +23,6 @@ const NavigationComponent: FunctionComponent<Props> = ({ firebase }: Props) => {
         <Link className="button" to={ROUTES.CHATS}>
           Chats
         </Link>
-      </nav>
       <button  className="button button-outline"
         onClick={() => {
           firebase.doSignOut();
@@ -33,6 +32,7 @@ const NavigationComponent: FunctionComponent<Props> = ({ firebase }: Props) => {
       >
         Logout
       </button>
+      </nav>
     </div>
   );
 };

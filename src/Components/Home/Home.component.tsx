@@ -13,7 +13,7 @@ type Props = {
 
 export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
 
-    const { location } = useGeo();
+    const { location, locationError } = useGeo();
     const { user } = useUser();
     const [localUsers, setLocalUsers] = useState<GeoFirestoreTypes.QueryDocumentSnapshot[]>([])
     const [radius, setRadius] = useState<number>(2);
@@ -38,14 +38,15 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
         if (!!Object.keys(location).length) {
             fetchLocalUsers(location, radius);
         }
-    }, [location, radius])
+    }, [location, radius, locationError])
 
 
     return (
-        <Fragment>
+        <div className='container'>
             <span>Search radius: {radius}km</span>
             <input type='range' name="radius" defaultValue={radius} min='1' step='1' max='20' onChange={radiusSliderHandler} />
+            {locationError && <p>{locationError.message}</p>}
             <LeafletMap radius={radius} centre={location} markers={localUsers} />
-        </Fragment>
+        </div>
     )
 }

@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent } from 'react'
+import React, { Fragment, FunctionComponent, useState } from 'react'
 import Firebase from '../../Firebase/firebase';
 import * as ROUTES from '../../Constants/routes'
 import { useForm, OnSubmit } from 'react-hook-form'
@@ -11,8 +11,9 @@ type Props = {
 }
 
 export const SignUpComponent: FunctionComponent<Props> = ({ firebase }: Props) => {
-    const { register, handleSubmit, watch, errors } = useForm();
-    const { location } = useGeo();
+    const { register, handleSubmit, errors } = useForm();
+    const { location, locationError } = useGeo();
+    const [ error, setError ] = useState<string | undefined>(undefined);
 
     const getGeoPoint: (latitude: number, longitude: number) => firebase.firestore.GeoPoint = (latitude, longitude) => {
         return firebase.getGeoPoint(latitude, longitude);
@@ -32,7 +33,7 @@ export const SignUpComponent: FunctionComponent<Props> = ({ firebase }: Props) =
                         navigate(ROUTES.LOG_IN)
                     }, error => console.log(error))
                 }
-            }).catch((error: any) => { console.log(error) });
+            }).catch((error: Error) => setError(error.message));
         
     }
 
@@ -43,7 +44,8 @@ export const SignUpComponent: FunctionComponent<Props> = ({ firebase }: Props) =
                 <input required name='username' type='text' placeholder='username' ref={register({ required: true })} />
                 <input required name='email' type='email' placeholder='email' ref={register({ required: true })} />
                 <input required name='password' type='password' placeholder='password' ref={register({ required: true })} />
-                {errors.email && <span>email is required</span>}
+                {errors.email && <p>email is required</p>}
+                {error && <p>{error}</p>}
                 <button type='submit'>Register</button>
             </form>) : <span>no geolocation</span> }
         </div>
