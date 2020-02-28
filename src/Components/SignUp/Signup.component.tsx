@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent, useState } from "react";
+import React, { Fragment, FunctionComponent, useState, useEffect } from "react";
 import Firebase from "../../Firebase/firebase";
 import * as ROUTES from "../../Constants/routes";
 import { useForm, OnSubmit, ErrorMessage } from "react-hook-form";
@@ -85,7 +85,8 @@ export const SignUpComponent: FunctionComponent<Props> = ({
           <button type="submit">Register</button>
         </form>
       ) : (
-        <p>{ErrorMessages.get(locationError.code)}</p>
+        <p>{locationError.message}, {locationError.code}.  <br />
+        {ErrorMessages.get(locationError.code)}</p>
       )}
     </div>
   );
