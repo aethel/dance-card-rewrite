@@ -6,6 +6,7 @@ import { GeoQuery, GeoQuerySnapshot } from 'geofirestore';
 import { GeoFirestoreTypes } from 'geofirestore/dist/GeoFirestoreTypes'
 import { LatLngLiteral } from 'leaflet';
 import { useUser } from '../../Contexts/user.context';
+import { useProfile } from '../../Contexts/profile.context';
 
 type Props = {
     firebase: Firebase
@@ -15,11 +16,13 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
 
     const { location, locationError } = useGeo();
     const { user } = useUser();
+    const { profile } = useProfile();
     const [localUsers, setLocalUsers] = useState<GeoFirestoreTypes.QueryDocumentSnapshot[]>([])
     const [radius, setRadius] = useState<number>(2);
-
+    const DEV_LOCATION = {lat:55.93570297055991, lng:-3.1465507938538726};
     const fetchLocalUsers = (place: LatLngLiteral, radius:number) => {
         const geoPoint = place && firebase.getGeoPoint(place.lat, place.lng);
+        // const geoPoint = place && firebase.getGeoPoint(DEV_LOCATION.lat, DEV_LOCATION.lng);
         const query: GeoQuery = firebase.getUsers().near({ center: geoPoint, radius });
         query.onSnapshot((res: GeoQuerySnapshot) => {
             const usersWithoutCurrentUser = res.docs.filter(u => u.id !== user.uid).filter(user => 
@@ -47,6 +50,7 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
             <input type='range' name="radius" defaultValue={radius} min='1' step='1' max='20' onChange={radiusSliderHandler} />
             {locationError && <p>{locationError.message}</p>}
             <LeafletMap radius={radius} centre={location} markers={localUsers} />
+            {/* <LeafletMap radius={radius} centre={DEV_LOCATION} markers={localUsers} /> */}
         </div>
     )
 }

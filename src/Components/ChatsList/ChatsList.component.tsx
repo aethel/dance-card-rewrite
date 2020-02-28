@@ -1,9 +1,10 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, { FunctionComponent, useState, useEffect, Fragment } from "react";
 import Firebase from "../../Firebase/firebase";
 import { useUser } from "../../Contexts/user.context";
 import ChatInputComponent from "../ChatInput/ChatInput.component";
 import "./ChatsList.component.css";
 import { useMsgNotification } from "../../Contexts/messageNotification.context";
+import { isObjectWithValue } from "../../Utils/object";
 
 type Props = {
   firebase: Firebase;
@@ -37,16 +38,17 @@ const ChatsListComponent: FunctionComponent<Props> = ({
       {!state?.length && <p>no chats</p>}
       {state?.map(
         (item: firebase.firestore.QueryDocumentSnapshot, index: number) => {
-          const messages = item.data().messages;
-          const read = item.data().messages.length;
+          const messages = isObjectWithValue(item.data(), 'messages') ?  item.data().messages : undefined;
+console.log(messages);
 
           const existingChatID: string = item.id;
           const targetUserID = () =>
             item.data().members.find((id: string) => id !== user.uid);
           return (
+            <Fragment>{messages ?
             <details className="container" key={`${index}${targetID}`}>
               <summary>
-                {messages[0].fromName},{" "}
+                {messages[0].fromName},
                 {new Date(messages[0].timestamp).toLocaleDateString("en-GB", {
                   weekday: "long",
                   year: "numeric",
@@ -75,7 +77,8 @@ const ChatsListComponent: FunctionComponent<Props> = ({
                 firebase={firebase}
                 routeProps={{ targetUserID: targetUserID(), existingChatID }}
               />
-            </details>
+            </details> : <p>No Could be a faulty chat.</p>}
+            </Fragment>
           );
         }
       )}
