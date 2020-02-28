@@ -39,14 +39,12 @@ const ChatsListComponent: FunctionComponent<Props> = ({
       {state?.map(
         (item: firebase.firestore.QueryDocumentSnapshot, index: number) => {
           const messages = isObjectWithValue(item.data(), 'messages') ?  item.data().messages : undefined;
-console.log(messages);
-
           const existingChatID: string = item.id;
           const targetUserID = () =>
             item.data().members.find((id: string) => id !== user.uid);
           return (
-            <Fragment>{messages ?
-            <details className="container" key={`${index}${targetID}`}>
+            <div key={`${index}${targetID}`}>{messages ?
+            <details className="container" >
               <summary>
                 {messages[0].fromName},
                 {new Date(messages[0].timestamp).toLocaleDateString("en-GB", {
@@ -78,7 +76,7 @@ console.log(messages);
                 routeProps={{ targetUserID: targetUserID(), existingChatID }}
               />
             </details> : <p>No Could be a faulty chat.</p>}
-            </Fragment>
+            </div>
           );
         }
       )}

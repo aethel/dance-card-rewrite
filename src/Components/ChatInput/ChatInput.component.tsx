@@ -13,7 +13,9 @@ type Props = {
 const ChatInputComponent: FunctionComponent<Props> = ({ ...props }) => {
   const { firebase } = props;
   const { targetUserID, existingChatID } = props.routeProps;
-  const [message, setMessage] = useState<string>();
+  const [message, setMessage] = useState<string>('');
+  const [error, setError] = useState<Error>();
+  const [isSending, setIsSending] = useState<boolean>();
   const [currentChatId, setCurrentChatId] = useState<string | undefined>(
     undefined
   );
@@ -47,6 +49,7 @@ useEffect(() => {
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
+    setIsSending(true);
     if (currentChatId) {
       firebase
         .getChats()
@@ -59,7 +62,8 @@ useEffect(() => {
             timestamp: +new Date()
           }),
           last_updated: +new Date()
-        });
+        }).then(() => {setIsSending(false)}).catch((e:Error) => setError(e));
+        setMessage('');
     } else {
       firebase
         .getChats()
@@ -74,9 +78,10 @@ useEffect(() => {
               message: message,
               timestamp: +new Date()
             })
-          });
+          }).then(() => setIsSending(false)).catch((e:Error) => setError(e));
         });
     }
+    setMessage('');
   };
 
   return (
@@ -85,9 +90,11 @@ useEffect(() => {
         type="text"
         name="message"
         placeholder="Write message"
+        value={message}
         onChange={event => setMessage(event.target.value)}
       />
-      <button type="submit">send</button>
+      <button type="submit">{isSending ? 'sending...': 'send'}</button>
+      {error && <p>Something went wrong with sending the message: {error.message}</p>}
     </form>
   );
 };
