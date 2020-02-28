@@ -1,4 +1,4 @@
-import React, { FunctionComponent, Fragment } from "react";
+import React, { FunctionComponent, Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as ROUTES from "../../Constants/routes";
 import { useUser } from "../../Contexts/user.context";
@@ -7,12 +7,14 @@ import { Profile } from "../../Models/profile.models";
 import { useProfile } from "../../Contexts/profile.context";
 import { navigate } from "@reach/router";
 import "./Profile.form.component.css";
+import { stringify } from "querystring";
 type Props = {
   firebase: Firebase;
 };
 const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
   const { user } = useUser();
   const { profile, setProfile } = useProfile();
+  const [error, setError] = useState<string>();
   const { register, handleSubmit, errors, formState } = useForm<Profile>();
 
   const onSubmit = (data: Profile) => {
@@ -26,7 +28,7 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
             setProfile(data);
             navigate(ROUTES.HOME);
           },
-          error => console.log(error)
+          (error:Error) => setError(error.message)
         );
     }
   };
@@ -110,6 +112,7 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
         <button type="submit">Update</button>
       </form>
       {errors && console.log(errors)}
+      {error && <p>{error}</p>}
     </div>
   );
 };
