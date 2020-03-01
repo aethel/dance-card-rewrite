@@ -5,6 +5,7 @@ import ChatInputComponent from "../ChatInput/ChatInput.component";
 import "./ChatsList.component.css";
 import { useMsgNotification } from "../../Contexts/messageNotification.context";
 import { isObjectWithValue } from "../../Utils/object";
+import { sortMessagesDesc } from "../../Utils/array";
 
 type Props = {
   firebase: Firebase;
@@ -38,7 +39,7 @@ const ChatsListComponent: FunctionComponent<Props> = ({
       {!state?.length && <p>no chats</p>}
       {state?.map(
         (item: firebase.firestore.QueryDocumentSnapshot, index: number) => {
-          const messages = isObjectWithValue(item.data(), 'messages') ?  item.data().messages : undefined;
+          const messages = isObjectWithValue(item.data(), 'messages') ?  item.data().messages.sort(sortMessagesDesc) : undefined;
           const existingChatID: string = item.id;
           const targetUserID = () =>
             item.data().members.find((id: string) => id !== user.uid);

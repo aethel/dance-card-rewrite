@@ -6,6 +6,7 @@ import React, {
 import Firebase from "../../Firebase/firebase";
 import { useUser } from "../../Contexts/user.context";
 import ChatInputComponent from "../ChatInput/ChatInput.component";
+import { sortMessagesDesc } from "../../Utils/array";
 
 type Props = {
   firebase: Firebase;
@@ -36,7 +37,7 @@ const SingleChatComponent: FunctionComponent<Props> = ({ ...props }) => {
   return (
     <div className='container'>
       {!state && <p>no chat</p>}
-      {state?.data().messages.map((item: any, index: number) => {
+      {state?.data().messages.sort(sortMessagesDesc).map((item: any, index: number) => {
         return (
           <div key={`${index}${targetChatID}`} className={item.fromID === user.uid ? 'messageBoxFrom': 'messageBoxTo' }>
             <strong> From: {item.fromName}</strong> <p>{item.message}</p>
