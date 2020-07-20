@@ -1,9 +1,14 @@
-import React, { FunctionComponent, useState, FormEvent, useEffect } from "react";
-import Firebase from "../../Firebase/firebase";
-import { useUser } from "../../Contexts/user.context";
-import { useProfile } from "../../Contexts/profile.context";
-import { GeoDocumentReference } from "geofirestore/dist/GeoDocumentReference";
-import { Profile } from "../../Models/profile.models";
+import React, {
+  FunctionComponent,
+  useState,
+  FormEvent,
+  useEffect,
+} from 'react';
+import Firebase from '../../Firebase/firebase';
+import { useUser } from '../../Contexts/user.context';
+import { useProfile } from '../../Contexts/profile.context';
+import { GeoDocumentReference } from 'geofirestore/dist/GeoDocumentReference';
+import { Profile } from '../../Models/profile.models';
 
 type Props = {
   firebase: Firebase;
@@ -22,12 +27,11 @@ const ChatInputComponent: FunctionComponent<Props> = ({ ...props }) => {
   const { user } = useUser();
   const { profile, setProfile } = useProfile();
 
-useEffect(() => {
-  if(existingChatID) {
-    setCurrentChatId(existingChatID);
-  }
-}, [])
-
+  useEffect(() => {
+    if (existingChatID) {
+      setCurrentChatId(existingChatID);
+    }
+  }, []);
 
   const updateChatsIdInProfile = (chatID: string) => {
     if ((profile.chats as string[]).includes(chatID)) {
@@ -38,8 +42,8 @@ useEffect(() => {
     //if target id === user.uid, cancel
     updateUsersChatIds(chatID, user.uid!)
       .then(() => setProfile(newProfile as Profile))
-      .catch(e => console.log(e));
-    updateUsersChatIds(chatID, targetUserID).catch(e => console.log(e));
+      .catch((e) => console.log(e));
+    updateUsersChatIds(chatID, targetUserID).catch((e) => console.log(e));
   };
 
   const updateUsersChatIds = (chatID: string, userID: string): Promise<any> => {
@@ -59,42 +63,51 @@ useEffect(() => {
             fromName: profile.username,
             fromID: user.uid,
             message: message,
-            timestamp: +new Date()
+            timestamp: +new Date(),
           }),
-          last_updated: +new Date()
-        }).then(() => {setIsSending(false)}).catch((e:Error) => setError(e));
-        setMessage('');
+          last_updated: +new Date(),
+        })
+        .then(() => {
+          setIsSending(false);
+        })
+        .catch((e: Error) => setError(e));
+      setMessage('');
     } else {
       firebase
         .getChats()
         .add({ members: [targetUserID, user.uid], last_updated: +new Date() })
-        .then(refID => {
+        .then((refID) => {
           setCurrentChatId(refID.id);
           updateChatsIdInProfile(refID.id);
-          refID.update({
-            messages: firebase.fieldValue.arrayUnion({
-              fromName: profile.username,
-              fromID: user.uid,
-              message: message,
-              timestamp: +new Date()
+          refID
+            .update({
+              messages: firebase.fieldValue.arrayUnion({
+                fromName: profile.username,
+                fromID: user.uid,
+                message: message,
+                timestamp: +new Date(),
+              }),
             })
-          }).then(() => setIsSending(false)).catch((e:Error) => setError(e));
+            .then(() => setIsSending(false))
+            .catch((e: Error) => setError(e));
         });
     }
     setMessage('');
   };
 
   return (
-    <form onSubmit={submitHandler} className='container'>
+    <form onSubmit={submitHandler} className="container">
       <input
         type="text"
         name="message"
         placeholder="Write message"
         value={message}
-        onChange={event => setMessage(event.target.value)}
+        onChange={(event) => setMessage(event.target.value)}
       />
-      <button type="submit">{isSending ? 'sending...': 'send'}</button>
-      {error && <p>Something went wrong with sending the message: {error.message}</p>}
+      <button type="submit">{isSending ? 'sending...' : 'send'}</button>
+      {error && (
+        <p>Something went wrong with sending the message: {error.message}</p>
+      )}
     </form>
   );
 };

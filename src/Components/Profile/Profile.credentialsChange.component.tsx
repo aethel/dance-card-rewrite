@@ -1,18 +1,18 @@
-import React, { FunctionComponent, Fragment, useState } from "react";
-import { useForm } from "react-hook-form";
-import * as ROUTES from "../../Constants/routes";
-import { useUser } from "../../Contexts/user.context";
-import Firebase from "../../Firebase/firebase";
-import { Profile } from "../../Models/profile.models";
-import { useProfile } from "../../Contexts/profile.context";
-import { navigate } from "@reach/router";
-import { GeoDocumentReference } from "geofirestore";
+import React, { FunctionComponent, Fragment, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as ROUTES from '../../Constants/routes';
+import { useUser } from '../../Contexts/user.context';
+import Firebase from '../../Firebase/firebase';
+import { Profile } from '../../Models/profile.models';
+import { useProfile } from '../../Contexts/profile.context';
+import { navigate } from '@reach/router';
+import { GeoDocumentReference } from 'geofirestore';
 
 type Props = {
   firebase: Firebase;
 };
 const ProfileCredentialsChangeComponent: FunctionComponent<Props> = ({
-  firebase
+  firebase,
 }) => {
   const { user } = useUser();
   const { profile, setProfile } = useProfile();
@@ -33,12 +33,12 @@ const ProfileCredentialsChangeComponent: FunctionComponent<Props> = ({
       firebase
         .getCurrentUser()
         ?.updateEmail(data.email!)
-        .then(res => {
-          updateProfileField("email", data.email!, user.uid!)
+        .then((res) => {
+          updateProfileField('email', data.email!, user.uid!)
             .then(() => {
               navigate(ROUTES.HOME);
             })
-            .catch(e => console.log(e));
+            .catch((e) => console.log(e));
         })
         .catch((e: Error) => setLocalError(e.message));
     }
@@ -59,7 +59,7 @@ const ProfileCredentialsChangeComponent: FunctionComponent<Props> = ({
   // };
 
   return (
-    <div className='container'>
+    <div className="container">
       <form onSubmit={handleSubmit(updateEmail)}>
         <legend>Update email</legend>
         <ul>
@@ -79,7 +79,7 @@ const ProfileCredentialsChangeComponent: FunctionComponent<Props> = ({
         <button type="submit">Update email</button>
       </form>
       {/* <form onSubmit={handleSubmit(updatePassword)}>
-        <legend>Update Password</legend>
+        <legend>Update Password</legend> 
         <ul>
           <li>
             <label>
@@ -95,7 +95,7 @@ const ProfileCredentialsChangeComponent: FunctionComponent<Props> = ({
         </ul>
         <button type="submit">Update password</button>
       </form> */}
-      {errors && console.log(errors)}
+      {Object.keys(errors).length && console.log(errors)}
       {localError && <p>{localError}</p>}
     </div>
   );

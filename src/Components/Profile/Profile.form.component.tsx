@@ -1,13 +1,13 @@
-import React, { FunctionComponent, Fragment, useState } from "react";
-import { useForm } from "react-hook-form";
-import * as ROUTES from "../../Constants/routes";
-import { useUser } from "../../Contexts/user.context";
-import Firebase from "../../Firebase/firebase";
-import { Profile } from "../../Models/profile.models";
-import { useProfile } from "../../Contexts/profile.context";
-import { navigate } from "@reach/router";
-import "./Profile.form.component.css";
-import { stringify } from "querystring";
+import React, { FunctionComponent, Fragment, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as ROUTES from '../../Constants/routes';
+import { useUser } from '../../Contexts/user.context';
+import Firebase from '../../Firebase/firebase';
+import { Profile } from '../../Models/profile.models';
+import { useProfile } from '../../Contexts/profile.context';
+import { navigate } from '@reach/router';
+import './Profile.form.component.css';
+import { stringify } from 'querystring';
 type Props = {
   firebase: Firebase;
 };
@@ -24,11 +24,11 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
         .doc(user.uid)
         .set(data, { merge: true })
         .then(
-          docRef => {
+          (docRef) => {
             setProfile(data);
             navigate(ROUTES.HOME);
           },
-          (error:Error) => setError(error.message)
+          (error: Error) => setError(error.message)
         );
     }
   };
@@ -82,9 +82,7 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
                   <span className="column column-30">{danceName}</span>
 
                   <span className="row">
-                    <label htmlFor={danceName}>
-                      Lead
-                    </label>
+                    <label htmlFor={danceName}>Lead</label>
                     <input
                       type="checkbox"
                       ref={register}
@@ -94,9 +92,7 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
                     />
                   </span>
                   <span className="row">
-                    <label htmlFor={danceName}>
-                      Follow
-                    </label>
+                    <label htmlFor={danceName}>Follow</label>
                     <input
                       type="checkbox"
                       ref={register}
@@ -111,7 +107,8 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
         </ul>
         <button type="submit">Update</button>
       </form>
-      {errors && console.log(errors)}
+      {Object.keys(errors).length &&
+        console.log(errors, ' errors in form comp')}
       {error && <p>{error}</p>}
     </div>
   );

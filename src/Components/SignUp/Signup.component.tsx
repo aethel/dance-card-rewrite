@@ -1,18 +1,18 @@
-import React, { Fragment, FunctionComponent, useState, useEffect } from "react";
-import Firebase from "../../Firebase/firebase";
-import * as ROUTES from "../../Constants/routes";
-import { useForm, OnSubmit, ErrorMessage } from "react-hook-form";
-import { navigate } from "@reach/router";
-import { useGeo } from "../../Contexts/geolocation.context";
-import { Profile } from "../../Models/profile.models";
-import ErrorMessages from "../../Constants/errors";
+import React, { Fragment, FunctionComponent, useState, useEffect } from 'react';
+import Firebase from '../../Firebase/firebase';
+import * as ROUTES from '../../Constants/routes';
+import { useForm, OnSubmit, ErrorMessage } from 'react-hook-form';
+import { navigate } from '@reach/router';
+import { useGeo } from '../../Contexts/geolocation.context';
+import { Profile } from '../../Models/profile.models';
+import ErrorMessages from '../../Constants/errors';
 
 type Props = {
   firebase: Firebase;
 };
 
 export const SignUpComponent: FunctionComponent<Props> = ({
-  firebase
+  firebase,
 }: Props) => {
   const { register, handleSubmit, errors } = useForm();
   const { location, locationError } = useGeo();
@@ -36,7 +36,7 @@ export const SignUpComponent: FunctionComponent<Props> = ({
             uid: res.user.uid,
             username: username,
             email: res.user.email,
-            coordinates: getGeoPoint(location.lat, location.lng)
+            coordinates: getGeoPoint(location.lat, location.lng),
           };
 
           firebase
@@ -44,10 +44,10 @@ export const SignUpComponent: FunctionComponent<Props> = ({
             .doc(res.user.uid)
             .set(doc)
             .then(
-              docRef => {
+              (docRef) => {
                 navigate(ROUTES.LOG_IN);
               },
-              error => setError(error)
+              (error) => setError(error)
             );
         }
       })
@@ -85,8 +85,10 @@ export const SignUpComponent: FunctionComponent<Props> = ({
           <button type="submit">Register</button>
         </form>
       ) : (
-        <p>{locationError.message}, {locationError.code}.  <br />
-        {ErrorMessages.get(locationError.code)}</p>
+        <p>
+          {locationError.message}, {locationError.code}. <br />
+          {ErrorMessages.get(locationError.code)}
+        </p>
       )}
     </div>
   );
