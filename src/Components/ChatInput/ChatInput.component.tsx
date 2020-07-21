@@ -9,6 +9,8 @@ import { useUser } from '../../Contexts/user.context';
 import { useProfile } from '../../Contexts/profile.context';
 import { GeoDocumentReference } from 'geofirestore/dist/GeoDocumentReference';
 import { Profile } from '../../Models/profile.models';
+import { navigate } from '@reach/router';
+import * as ROUTES from '../../Constants/routes';
 
 type Props = {
   firebase: Firebase;
@@ -88,7 +90,10 @@ const ChatInputComponent: FunctionComponent<Props> = ({ ...props }) => {
                 timestamp: +new Date(),
               }),
             })
-            .then(() => setIsSending(false))
+            .then(() => {
+              setIsSending(false);
+              navigate(ROUTES.CHATS);
+            })
             .catch((e: Error) => setError(e));
         });
     }
