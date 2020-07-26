@@ -19,7 +19,7 @@ type Props = {
 
 const ChatInputComponent: FunctionComponent<Props> = ({ ...props }) => {
   const { firebase } = props;
-  const { targetUserID, existingChatID } = props.routeProps;
+  const { targetUserID, existingChatID, targetUsername } = props.routeProps;
   const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<Error>();
   const [isSending, setIsSending] = useState<boolean>();
@@ -29,6 +29,7 @@ const ChatInputComponent: FunctionComponent<Props> = ({ ...props }) => {
   const { user } = useUser();
   const { profile, setProfile } = useProfile();
 
+  // on basis of username and currentchat id, hide
   useEffect(() => {
     if (existingChatID) {
       setCurrentChatId(existingChatID);
@@ -105,7 +106,11 @@ const ChatInputComponent: FunctionComponent<Props> = ({ ...props }) => {
       <input
         type="text"
         name="message"
-        placeholder="Write message"
+        placeholder={
+          !currentChatId
+            ? `Your first message to ${targetUsername}`
+            : 'Write message'
+        }
         value={message}
         onChange={(event) => setMessage(event.target.value)}
       />
