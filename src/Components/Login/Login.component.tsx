@@ -16,7 +16,7 @@ export const LoginComponent: FunctionComponent<Props> = ({
   const { register, handleSubmit, errors } = useForm();
   const { location, locationError } = useGeo();
   const { setUser } = useUser();
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [error, setError] = useState<Error | undefined>(undefined);
 
   const getGeoPoint: (
     latitude: number,
@@ -26,25 +26,32 @@ export const LoginComponent: FunctionComponent<Props> = ({
   };
 
   const submitHandler: OnSubmit<any> = ({ email, password }, event): void => {
-    firebase.doEmailSignIn(email, password).then((res: any) => {
-      const { uid, email, displayName, name } = res.user.toJSON();
-      localStorage.setItem(
-        'user',
-        JSON.stringify(Object.assign({}, { uid, email, displayName, name }))
-      );
-      setUser!({ uid, email, displayName, name });
-
-      firebase
-        .getUsers()
-        .doc(uid)
-        .update({ coordinates: getGeoPoint(location.lat, location.lng) })
-        .then(
-          () => {
-            navigate(ROUTES.HOME);
-          },
-          (error) => setError(error)
+    firebase
+      .doEmailSignIn(email, password)
+      .then((res: any) => {
+        const { uid, email, displayName, name } = res.user.toJSON();
+        localStorage.setItem(
+          'user',
+          JSON.stringify(Object.assign({}, { uid, email, displayName, name }))
         );
-    });
+        setUser!({ uid, email, displayName, name });
+
+        firebase
+          .getUsers()
+          .doc(uid)
+          .update({
+            coordinates: getGeoPoint(location.lat ?? 0, location.lng ?? 0),
+          })
+          .then(
+            () => {
+              navigate(ROUTES.HOME);
+            },
+            (error) => setError(error)
+          );
+      })
+      .catch((error: Error) => {
+        setError(error);
+      });
   };
 
   return (
@@ -64,7 +71,11 @@ export const LoginComponent: FunctionComponent<Props> = ({
           ref={register({ required: true })}
         />
         {errors.email && <span>email is required</span>}
-        {error && <p>{error}</p>}
+        {error && (
+          <p>
+            {error.name} - {error.message}
+          </p>
+        )}
         <button type="submit">log in</button>
       </form>
       <Link to={ROUTES.SIGN_UP}>No account? Register.</Link>

@@ -8,11 +8,6 @@ const NotificationComponent: FunctionComponent = () => {
   const { msg } = useMsgNotification();
   const { user } = useUser();
 
-  useEffect(() => {
-    console.log('user', user);
-    console.log('msg', msg);
-  }, [user]);
-
   const lastMessage = msg?.exists
     ? msg?.data().messages[msg?.data().messages.length - 1].message
     : undefined;

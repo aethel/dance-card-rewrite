@@ -38,25 +38,26 @@ const ProfileCredentialsChangeComponent: FunctionComponent<Props> = ({
             .then(() => {
               navigate(ROUTES.HOME);
             })
-            .catch((e) => console.log(e));
+            .catch((e: Error) => setLocalError(e.message));
         })
         .catch((e: Error) => setLocalError(e.message));
     }
   };
 
-  // const updatePassword = (data: any) => {
-  //   if (!Object.keys(errors).length) {
-  //     firebase
-  //       .getCurrentUser()
-  //       ?.updatePassword(data.password)
-  //       .then(
-  //         docRef => {
-  //           navigate(ROUTES.HOME);
-  //         },
-  //         error => console.log(error)
-  //       );
-  //   }
-  // };
+  const updatePassword = (data: any) => {
+    if (!Object.keys(errors).length) {
+      firebase
+        .getCurrentUser()
+        ?.updatePassword(data.password)
+        .then(
+          (docRef) => {
+            navigate(ROUTES.HOME);
+          },
+          (e: Error) => setLocalError(e.message)
+        )
+        .catch((e: Error) => setLocalError(e.message));
+    }
+  };
 
   return (
     <div className="container">
@@ -78,8 +79,8 @@ const ProfileCredentialsChangeComponent: FunctionComponent<Props> = ({
         </ul>
         <button type="submit">Update email</button>
       </form>
-      {/* <form onSubmit={handleSubmit(updatePassword)}>
-        <legend>Update Password</legend> 
+      <form id="passchange" onSubmit={handleSubmit(updatePassword)}>
+        <legend>Update Password</legend>
         <ul>
           <li>
             <label>
@@ -91,12 +92,14 @@ const ProfileCredentialsChangeComponent: FunctionComponent<Props> = ({
                 ref={register({ required: true })}
               />
             </label>
+            {!!Object.keys(errors).length && console.log(errors)}
           </li>
         </ul>
-        <button type="submit">Update password</button>
-      </form> */}
-      {Object.keys(errors).length && console.log(errors)}
-      {localError && <p>{localError}</p>}
+        {localError && <p>{localError}</p>}
+        <button form="passchange" type="submit">
+          Update password
+        </button>
+      </form>
     </div>
   );
 };

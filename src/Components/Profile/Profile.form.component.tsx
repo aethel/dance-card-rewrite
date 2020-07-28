@@ -107,9 +107,9 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
         </ul>
         <button type="submit">Update</button>
       </form>
-      {Object.keys(errors).length &&
+      {!!Object.keys(errors).length &&
         console.log(errors, ' errors in form comp')}
-      {error && <p>{error}</p>}
+      {!!Object.keys(errors).length && <p>{error}</p>}
     </div>
   );
 };
