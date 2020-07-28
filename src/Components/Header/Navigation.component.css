@@ -1,7 +1,16 @@
 .button {
-    margin: 10px;
+  margin: 10px;
 }
 
 nav {
-    display: inline-block;
+  display: inline-block;
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+.disabled:hover,
+.disabled:focus {
+  cursor: not-allowed;
 }
