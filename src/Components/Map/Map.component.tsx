@@ -9,7 +9,7 @@ import CustomPopup from '../CustomPopup/CustomPopup.component';
 import { Link } from '@reach/router';
 import * as ROUTES from '../../Constants/routes';
 import { Profile } from '../../Models/profile.models';
-
+import './Map.component.css';
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -47,7 +47,7 @@ export const LeafletMap = (props: Props) => {
         url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
       />
 
-      <Marker position={setDefaultLocation()}>
+      <Marker opacity={0.5} position={setDefaultLocation()}>
         <Popup>You're here</Popup>
       </Marker>
       <Circle

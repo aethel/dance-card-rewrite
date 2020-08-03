@@ -29,12 +29,15 @@ export const LoginComponent: FunctionComponent<Props> = ({
     firebase
       .doEmailSignIn(email, password)
       .then((res: any) => {
-        const { uid, email, displayName, name } = res.user.toJSON();
+        console.log('res', res)
+        const { uid, email, displayName, name, refreshToken } = res.user.toJSON();
+        res.user.getIdToken();
+        console.log('object', res.user.getIdToken());
         localStorage.setItem(
           'user',
-          JSON.stringify(Object.assign({}, { uid, email, displayName, name }))
+          JSON.stringify(Object.assign({}, { uid, email, displayName, name,refreshToken }))
         );
-        setUser!({ uid, email, displayName, name });
+        setUser!({ uid, email, displayName, name,refreshToken });
 
         firebase
           .getUsers()

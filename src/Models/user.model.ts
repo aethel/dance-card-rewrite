@@ -6,6 +6,7 @@ interface IUser {
     name: string | undefined;
     email: string | undefined;
     displayName: string | undefined;
+    refreshToken: string | undefined;
 }
 // extends GeoFirestoreTypes.Document 
 // g: any;
@@ -18,5 +19,6 @@ export class User implements IUser {
     readonly name = undefined;
     readonly email = undefined;
     readonly displayName = undefined;
+    readonly refreshToken = undefined;
     static create ():User {return new User()};
 }
