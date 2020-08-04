@@ -51,7 +51,6 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
 
   return (
     <div className="container">
-      <p>Location test: {location.lat}, {location.lng}</p>
       <span>Search radius: {radius}km</span>
       <input
         type="range"

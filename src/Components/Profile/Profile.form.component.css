@@ -1,3 +1,12 @@
 li {
   list-style-type: none;
+  max-height: 40px;
+}
+
+input[type=checkbox] {
+  margin: 5px;
+}
+
+.danceItem:nth-child(odd) {
+  background: rgba(155,155,155,0.2);
 }

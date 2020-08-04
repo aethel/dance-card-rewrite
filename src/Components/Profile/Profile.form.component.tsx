@@ -7,10 +7,11 @@ import { Profile } from '../../Models/profile.models';
 import { useProfile } from '../../Contexts/profile.context';
 import { navigate } from '@reach/router';
 import './Profile.form.component.css';
-import { stringify } from 'querystring';
+
 type Props = {
   firebase: Firebase;
 };
+
 const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
   const { user } = useUser();
   const { profile, setProfile } = useProfile();
@@ -77,30 +78,35 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
             Object.entries(profile.dances).map((dance: any, index: number) => {
               const danceName: string = dance[0];
               const positionsObj: any = dance[1];
+              console.log('positionObj', positionsObj, danceName)
               return (
-                <li key={index} className="row">
-                  <span className="column column-30">{danceName}</span>
+                <li key={index} className={`danceItem row`}>
+                  <b className="column column-20">{danceName}</b>
 
-                  <span className="row">
-                    <label htmlFor={danceName}>Lead</label>
+                  <div className="column column-40">
+                    <label htmlFor={`${danceName}-lead`}>
+                      <span>Lead</span>
                     <input
                       type="checkbox"
                       ref={register}
-                      id={danceName}
+                      id={`${danceName}-lead`}
                       defaultChecked={positionsObj.lead}
                       name={`dances.${danceName}.lead`}
-                    />
-                  </span>
-                  <span className="row">
-                    <label htmlFor={danceName}>Follow</label>
+                      />
+                      </label>
+                  </div>
+                  <div className="column column-40">
+                    <label htmlFor={`${danceName}-follow`}>
+                      <span>Follow</span>
                     <input
                       type="checkbox"
                       ref={register}
-                      id={danceName}
+                      id={`${danceName}-follow`}
                       defaultChecked={positionsObj.follow}
                       name={`dances.${danceName}.follow`}
-                    />
-                  </span>
+                      />
+                      </label>
+                  </div>
                 </li>
               );
             })}
