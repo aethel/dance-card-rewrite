@@ -78,35 +78,33 @@ const ProfileFormComponent: FunctionComponent<Props> = ({ firebase }) => {
             Object.entries(profile.dances).map((dance: any, index: number) => {
               const danceName: string = dance[0];
               const positionsObj: any = dance[1];
-              console.log('positionObj', positionsObj, danceName)
               return (
-                <li key={index} className={`danceItem row`}>
-                  <b className="column column-20">{danceName}</b>
-
-                  <div className="column column-40">
-                    <label htmlFor={`${danceName}-lead`}>
-                      <span>Lead</span>
-                    <input
-                      type="checkbox"
-                      ref={register}
-                      id={`${danceName}-lead`}
-                      defaultChecked={positionsObj.lead}
-                      name={`dances.${danceName}.lead`}
-                      />
+                <li key={index} className={`danceItem`}>
+                  <b className="">{danceName}</b>
+                    <div className="">
+                      <label htmlFor={`${danceName}-lead`}>
+                        <span>Lead</span>
+                        <input
+                          type="checkbox"
+                          ref={register}
+                          id={`${danceName}-lead`}
+                          defaultChecked={positionsObj.lead}
+                          name={`dances.${danceName}.lead`}
+                        />
                       </label>
-                  </div>
-                  <div className="column column-40">
-                    <label htmlFor={`${danceName}-follow`}>
-                      <span>Follow</span>
-                    <input
-                      type="checkbox"
-                      ref={register}
-                      id={`${danceName}-follow`}
-                      defaultChecked={positionsObj.follow}
-                      name={`dances.${danceName}.follow`}
-                      />
+                    </div>
+                    <div className="">
+                      <label htmlFor={`${danceName}-follow`}>
+                        <span>Follow</span>
+                        <input
+                          type="checkbox"
+                          ref={register}
+                          id={`${danceName}-follow`}
+                          defaultChecked={positionsObj.follow}
+                          name={`dances.${danceName}.follow`}
+                        />
                       </label>
-                  </div>
+                    </div>
                 </li>
               );
             })}
