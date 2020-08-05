@@ -23,7 +23,6 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
     GeoFirestoreTypes.QueryDocumentSnapshot[]
   >([]);
   const [radius, setRadius] = useState<number>(2);
-  const DEV_LOCATION = { lat: 55.93570297055991, lng: -3.1465507938538726 };
   const fetchLocalUsers = (place: LatLngLiteral, radius: number) => {
     const geoPoint = place && firebase.getGeoPoint(place.lat, place.lng);
     // const geoPoint = place && firebase.getGeoPoint(DEV_LOCATION.lat, DEV_LOCATION.lng);
@@ -62,8 +61,7 @@ export const HomeComponent: FunctionComponent<any> = ({ firebase }: Props) => {
         onChange={radiusSliderHandler}
       />
       {locationError && <p>{locationError.message}</p>}
-      {location && <LeafletMap radius={radius} centre={location} markers={localUsers} />}
-      {/* <LeafletMap radius={radius} centre={DEV_LOCATION} markers={localUsers} /> */}
+      {!!Object.keys(location).length ? <LeafletMap radius={radius} centre={location} markers={localUsers} /> : <p>We do need geolocation to show the map. Please enable it in your browser and reload the page.</p>}
     </div>
   );
 };
