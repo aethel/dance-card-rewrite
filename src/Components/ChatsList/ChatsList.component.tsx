@@ -20,6 +20,7 @@ const ChatsListComponent: FunctionComponent<Props> = ({
   const [state, setState] = useState<[]>();
   const { user } = useUser();
   const { msg } = useMsgNotification();
+  const [isFlashed, setIsFlashed] = useState<boolean>(false);
 
   useEffect(() => {
     getChats(false)
@@ -38,12 +39,14 @@ const ChatsListComponent: FunctionComponent<Props> = ({
           setState((prevState: any): any => {
             const lastChat = sortedRes[0];
             if (prevState?.length < sortedRes?.length) {
+              setIsFlashed(true);
               const newState = [lastChat, ...prevState]; 
               return newState;
             } else {
               setState(sortedRes);
             }
           });
+
         });
     }
   }
@@ -59,9 +62,10 @@ const ChatsListComponent: FunctionComponent<Props> = ({
             item.data().members.find((id: string) => id !== user.uid);
           return (
             <div key={`${index}${targetID}`}>{messages ?
-              <details className="container" >
-                <summary>
-                  {messages[0].fromName},
+              <details className="container" open={(isFlashed && index === 0) ? true : false} >
+                {index}
+                <summary className={isFlashed && index === 0 ? 'isFlashed' : ''} onClick={()=> (isFlashed && index === 0) && setIsFlashed(false)}>
+                  {messages[0]?.toName ? messages[0]?.toName : 'Mystery user' },
                 {new Date(messages[0].timestamp).toLocaleDateString("en-GB", {
                     weekday: "long",
                     year: "numeric",
@@ -88,7 +92,7 @@ const ChatsListComponent: FunctionComponent<Props> = ({
                 )}
                 <ChatInputComponent
                   firebase={firebase}
-                  routeProps={{ targetUserID: targetUserID(), existingChatID }}
+                  routeProps={{ targetUserID: targetUserID(), existingChatID, targetUsername: messages[0]?.toName }}
                 />
               </details> : <p>There may have been a chat here that got corrupted.</p>}
             </div>

@@ -62,6 +62,7 @@ const ChatInputComponent: FunctionComponent<Props> = ({ ...props }) => {
         .doc(currentChatId)
         .update({
           messages: firebase.fieldValue.arrayUnion({
+            toName: targetUsername,
             fromName: profile.username,
             fromID: user.uid,
             message: message,
@@ -85,6 +86,7 @@ const ChatInputComponent: FunctionComponent<Props> = ({ ...props }) => {
             .update({
               messages: firebase.fieldValue.arrayUnion({
                 fromName: profile.username,
+                toName: targetUsername,
                 fromID: user.uid,
                 message: message,
                 timestamp: +new Date(),
