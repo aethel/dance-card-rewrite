@@ -25,21 +25,21 @@ type Props = {
 };
 
 export const LeafletMap = (props: Props) => {
-  const defaultLocation: LatLngLiteral = {
-    lat: 45.6982642,
-    lng: 9.6772698,
-  };
+  // const defaultLocation: LatLngLiteral = {
+  //   lat: 45.6982642,
+  //   lng: 9.6772698,
+  // };
 
-  const setDefaultLocation = (): LatLngLiteral => {
-    return isObjectWithValue(props.centre, 'lat')
-      ? props.centre
-      : defaultLocation;
-  };
+  // const setDefaultLocation = (): LatLngLiteral => {
+  //   return isObjectWithValue(props.centre, 'lat')
+  //     ? props.centre
+  //     : defaultLocation;
+  // };
 
   return (
     <Map
       style={{ width: '100%', height: '90vw' }}
-      center={setDefaultLocation()}
+      center={props.centre}
       zoom={13}
     >
       <TileLayer
@@ -47,11 +47,11 @@ export const LeafletMap = (props: Props) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      <Marker opacity={0.5} position={setDefaultLocation()}>
+      <Marker opacity={0.5} position={props.centre}>
         <Popup>You're here</Popup>
       </Marker>
       <Circle
-        center={setDefaultLocation()}
+        center={props.centre}
         fillColor="blue"
         radius={props.radius * 1000}
       />

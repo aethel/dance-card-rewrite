@@ -29,7 +29,6 @@ const ChatInputComponent: FunctionComponent<Props> = ({ ...props }) => {
   const { user } = useUser();
   const { profile, setProfile } = useProfile();
 
-  // on basis of username and currentchat id, hide
   useEffect(() => {
     if (existingChatID) {
       setCurrentChatId(existingChatID);
@@ -102,7 +101,8 @@ const ChatInputComponent: FunctionComponent<Props> = ({ ...props }) => {
   };
 
   return (
-    <form onSubmit={submitHandler} className="container">
+    <>
+    {(targetUsername || targetUserID) && <form onSubmit={submitHandler} className="container">
       <input
         type="text"
         name="message"
@@ -118,7 +118,8 @@ const ChatInputComponent: FunctionComponent<Props> = ({ ...props }) => {
       {error && (
         <p>Something went wrong with sending the message: {error.message}</p>
       )}
-    </form>
+    </form>}
+    </>
   );
 };
 
