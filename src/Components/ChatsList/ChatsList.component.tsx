@@ -36,10 +36,10 @@ const ChatsListComponent: FunctionComponent<Props> = ({
         .then((res: firebase.firestore.DocumentData) => {
           const sortedRes = res?.docs?.sort(sortChatsDesc);
           setState((prevState: any): any => {
-            console.log('res.docs', res.docs)
-            console.log('prevState', prevState)
+            const lastChat = sortedRes[0];
             if (prevState?.length < sortedRes?.length) {
-              return sortedRes
+              const newState = [lastChat, ...prevState]; 
+              return newState;
             } else {
               setState(sortedRes);
             }
