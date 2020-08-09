@@ -51,12 +51,9 @@ const ChatsListComponent: FunctionComponent<Props> = ({
   return (
     <div className='container'>
       {!state?.length && <p>no chats</p>}
-      {console.log('state', state)}
       {state?.map(
         (item: firebase.firestore.QueryDocumentSnapshot, index: number) => {
           const messages = isObjectWithValue(item.data(), 'messages') ? item.data().messages.sort(sortMessagesDesc) : undefined;
-          console.log('messages', messages)
-          console.log('state', state)
           const existingChatID: string = item.id;
           const targetUserID = () =>
             item.data().members.find((id: string) => id !== user.uid);
@@ -93,7 +90,7 @@ const ChatsListComponent: FunctionComponent<Props> = ({
                   firebase={firebase}
                   routeProps={{ targetUserID: targetUserID(), existingChatID }}
                 />
-              </details> : <p>No Could be a faulty chat.</p>}
+              </details> : <p>There may have been a chat here that got corrupted.</p>}
             </div>
           );
         }
